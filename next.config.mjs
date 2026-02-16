@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['www.thesportsdb.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.thesportsdb.com',
+      },
+    ],
     unoptimized: true, // For static export if needed
   },
   // Enable React Compiler (experimental) - Requires babel-plugin-react-compiler

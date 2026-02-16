@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { SportEvent } from '../stores/eventStore';
 
 // TheSportsDB API v1 configuration
@@ -5,6 +6,67 @@ const API_KEY = '123'; // Free API key - use your own in production
 const BASE_URL = 'https://www.thesportsdb.com/api/v1/json';
 const API_TIMEOUT = 8000; // 8 second timeout for API calls
 const USE_MOCK_FALLBACK = false; // Only use mock data as last resort fallback
+
+const rawSportEventSchema = z
+  .object({
+    idEvent: z.string().nullish(),
+    strEvent: z.string().nullish(),
+    strLeague: z.string().nullish(),
+    strSport: z.string().nullish(),
+    dateEvent: z.string().nullish(),
+    strTime: z.string().nullish(),
+    strHomeTeam: z.string().nullish(),
+    strAwayTeam: z.string().nullish(),
+    intHomeScore: z.union([z.string(), z.number()]).nullish(),
+    intAwayScore: z.union([z.string(), z.number()]).nullish(),
+    strThumb: z.string().nullish(),
+    strStatus: z.string().nullish(),
+    strVenue: z.string().nullish(),
+    strCountry: z.string().nullish(),
+  })
+  .passthrough();
+
+const rawSportEventArraySchema = z.array(rawSportEventSchema);
+
+const normalizeScore = (value: string | number | null | undefined): string | null => {
+  if (value === null || value === undefined || value === '') {
+    return null;
+  }
+  return String(value);
+};
+
+const normalizeSportEvent = (event: z.infer<typeof rawSportEventSchema>): SportEvent => ({
+  idEvent: event.idEvent ?? '',
+  strEvent: event.strEvent ?? '',
+  strLeague: event.strLeague ?? '',
+  strSport: event.strSport ?? '',
+  dateEvent: event.dateEvent ?? '',
+  strTime: event.strTime ?? '',
+  strHomeTeam: event.strHomeTeam ?? '',
+  strAwayTeam: event.strAwayTeam ?? '',
+  intHomeScore: normalizeScore(event.intHomeScore),
+  intAwayScore: normalizeScore(event.intAwayScore),
+  strThumb: event.strThumb ?? null,
+  strStatus: event.strStatus ?? 'Not Started',
+  strVenue: event.strVenue ?? null,
+  strCountry: event.strCountry ?? null,
+});
+
+const parseEventsArray = (payload: unknown): SportEvent[] | null => {
+  const parsed = rawSportEventArraySchema.safeParse(payload ?? []);
+  if (!parsed.success) {
+    return null;
+  }
+  return parsed.data.map(normalizeSportEvent);
+};
+
+const parseEventSingle = (payload: unknown): SportEvent | null => {
+  const parsed = rawSportEventSchema.safeParse(payload ?? null);
+  if (!parsed.success) {
+    return null;
+  }
+  return normalizeSportEvent(parsed.data);
+};
 
 // Helper function to fetch with timeout
 async function fetchWithTimeout(url: string, timeout: number = API_TIMEOUT): Promise<Response> {
@@ -236,27 +298,14 @@ export async function fetchUpcomingEvents(dateStr?: string): Promise<SportEvent[
     }
 
     const data = await response.json();
-    const events = data.events || [];
-    
-    // Transform API response to match SportEvent interface
-    const transformedEvents = events.map((event: any) => ({
-      idEvent: event.idEvent || '',
-      strEvent: event.strEvent || '',
-      strLeague: event.strLeague || '',
-      strSport: event.strSport || '',
-      dateEvent: event.dateEvent || '',
-      strTime: event.strTime || '',
-      strHomeTeam: event.strHomeTeam || '',
-      strAwayTeam: event.strAwayTeam || '',
-      intHomeScore: event.intHomeScore || null,
-      intAwayScore: event.intAwayScore || null,
-      strThumb: event.strThumb || null,
-      strStatus: event.strStatus || 'Not Started',
-      strVenue: event.strVenue || null,
-      strCountry: event.strCountry || null,
-    }));
+    const parsedEvents = parseEventsArray(data?.events);
 
-    return transformedEvents.length > 0 ? transformedEvents : mockEvents;
+    if (!parsedEvents) {
+      console.warn('Upcoming events payload failed validation, using mock data');
+      return mockEvents;
+    }
+
+    return parsedEvents.length > 0 ? parsedEvents : mockEvents;
   } catch (error) {
     console.error('Failed to fetch upcoming events from API:', error);
     console.info('Falling back to mock data');
@@ -281,31 +330,15 @@ export async function fetchEventDetails(eventId: string): Promise<SportEvent | n
     }
 
     const data = await response.json();
-    const event = data.events?.[0];
+    const parsedEvent = parseEventSingle(data?.events?.[0]);
 
-    if (!event) {
+    if (!parsedEvent) {
       // Fall back to mock data
       const mockEvent = mockEvents.find((e) => e.idEvent === eventId);
       return mockEvent || null;
     }
 
-    // Transform API response to match SportEvent interface
-    return {
-      idEvent: event.idEvent || '',
-      strEvent: event.strEvent || '',
-      strLeague: event.strLeague || '',
-      strSport: event.strSport || '',
-      dateEvent: event.dateEvent || '',
-      strTime: event.strTime || '',
-      strHomeTeam: event.strHomeTeam || '',
-      strAwayTeam: event.strAwayTeam || '',
-      intHomeScore: event.intHomeScore || null,
-      intAwayScore: event.intAwayScore || null,
-      strThumb: event.strThumb || null,
-      strStatus: event.strStatus || 'Not Started',
-      strVenue: event.strVenue || null,
-      strCountry: event.strCountry || null,
-    };
+    return parsedEvent;
   } catch (error) {
     console.error(`Failed to fetch event details for ID ${eventId}:`, error);
     const mockEvent = mockEvents.find((e) => e.idEvent === eventId);
@@ -336,9 +369,9 @@ export async function searchEvents(query: string): Promise<SportEvent[]> {
     }
 
     const data = await response.json();
-    const events = data.events || [];
+    const parsedEvents = parseEventsArray(data?.events);
 
-    if (events.length === 0) {
+    if (!parsedEvents || parsedEvents.length === 0) {
       // Fall back to mock data filtering
       return mockEvents.filter(
         (e) =>
@@ -348,23 +381,7 @@ export async function searchEvents(query: string): Promise<SportEvent[]> {
       );
     }
 
-    // Transform API response to match SportEvent interface
-    return events.map((event: any) => ({
-      idEvent: event.idEvent || '',
-      strEvent: event.strEvent || '',
-      strLeague: event.strLeague || '',
-      strSport: event.strSport || '',
-      dateEvent: event.dateEvent || '',
-      strTime: event.strTime || '',
-      strHomeTeam: event.strHomeTeam || '',
-      strAwayTeam: event.strAwayTeam || '',
-      intHomeScore: event.intHomeScore || null,
-      intAwayScore: event.intAwayScore || null,
-      strThumb: event.strThumb || null,
-      strStatus: event.strStatus || 'Not Started',
-      strVenue: event.strVenue || null,
-      strCountry: event.strCountry || null,
-    }));
+    return parsedEvents;
   } catch (error) {
     console.error('Search events failed:', error);
     console.info('Falling back to local search in mock data');
@@ -393,28 +410,13 @@ export async function fetchTeamUpcomingEvents(teamId: string): Promise<SportEven
     }
 
     const data = await response.json();
-    const events = data.events || [];
+    const parsedEvents = parseEventsArray(data?.events);
 
-    if (events.length === 0) {
+    if (!parsedEvents || parsedEvents.length === 0) {
       return mockEvents;
     }
 
-    return events.map((event: any) => ({
-      idEvent: event.idEvent || '',
-      strEvent: event.strEvent || '',
-      strLeague: event.strLeague || '',
-      strSport: event.strSport || '',
-      dateEvent: event.dateEvent || '',
-      strTime: event.strTime || '',
-      strHomeTeam: event.strHomeTeam || '',
-      strAwayTeam: event.strAwayTeam || '',
-      intHomeScore: event.intHomeScore || null,
-      intAwayScore: event.intAwayScore || null,
-      strThumb: event.strThumb || null,
-      strStatus: event.strStatus || 'Not Started',
-      strVenue: event.strVenue || null,
-      strCountry: event.strCountry || null,
-    }));
+    return parsedEvents;
   } catch (error) {
     console.error(`Failed to fetch team upcoming events for ID ${teamId}:`, error);
     return mockEvents;
@@ -437,23 +439,16 @@ export async function fetchTeamPastEvents(teamId: string): Promise<SportEvent[]>
     }
 
     const data = await response.json();
-    const events = data.events || [];
+    const parsedEvents = parseEventsArray(data?.events);
 
-    return events.map((event: any) => ({
-      idEvent: event.idEvent || '',
-      strEvent: event.strEvent || '',
-      strLeague: event.strLeague || '',
-      strSport: event.strSport || '',
-      dateEvent: event.dateEvent || '',
-      strTime: event.strTime || '',
-      strHomeTeam: event.strHomeTeam || '',
-      strAwayTeam: event.strAwayTeam || '',
-      intHomeScore: event.intHomeScore || null,
-      intAwayScore: event.intAwayScore || null,
-      strThumb: event.strThumb || null,
+    if (!parsedEvents) {
+      console.warn('Past events payload failed validation, returning empty list');
+      return [];
+    }
+
+    return parsedEvents.map((event) => ({
+      ...event,
       strStatus: event.strStatus || 'Match Finished',
-      strVenue: event.strVenue || null,
-      strCountry: event.strCountry || null,
     }));
   } catch (error) {
     console.error(`Failed to fetch team past events for ID ${teamId}:`, error);
@@ -483,26 +478,13 @@ export async function fetchEventsByDate(
     }
 
     const data = await response.json();
-    const events = data.events || [];
+    const parsedEvents = parseEventsArray(data?.events);
 
-    return events.length > 0
-      ? events.map((event: any) => ({
-          idEvent: event.idEvent || '',
-          strEvent: event.strEvent || '',
-          strLeague: event.strLeague || '',
-          strSport: event.strSport || '',
-          dateEvent: event.dateEvent || '',
-          strTime: event.strTime || '',
-          strHomeTeam: event.strHomeTeam || '',
-          strAwayTeam: event.strAwayTeam || '',
-          intHomeScore: event.intHomeScore || null,
-          intAwayScore: event.intAwayScore || null,
-          strThumb: event.strThumb || null,
-          strStatus: event.strStatus || 'Not Started',
-          strVenue: event.strVenue || null,
-          strCountry: event.strCountry || null,
-        }))
-      : mockEvents;
+    if (!parsedEvents || parsedEvents.length === 0) {
+      return mockEvents;
+    }
+
+    return parsedEvents;
   } catch (error) {
     console.error('Failed to fetch events by date:', error);
     return mockEvents;
@@ -521,6 +503,12 @@ export function getApiConfig() {
     apiVersion: 'v1',
   };
 }
+
+export const sportsQueryKeys = {
+  upcomingEvents: (date?: string) => ['events', 'upcoming', date ?? 'today'] as const,
+  eventDetails: (eventId: string) => ['events', 'details', eventId] as const,
+  searchEvents: (query: string) => ['events', 'search', query] as const,
+};
 
 export function getUniqueSports(events: SportEvent[]): string[] {
   return Array.from(new Set(events.map((e) => e.strSport)));

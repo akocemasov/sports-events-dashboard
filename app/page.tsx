@@ -1,19 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { EventCard } from '@/components/EventCard';
 import { EventFilters } from '@/components/EventFilters';
 import { useEventStore } from '@/stores/eventStore';
-import { fetchUpcomingEvents } from '@/services/sportsApi';
+import { fetchUpcomingEvents, sportsQueryKeys } from '@/services/sportsApi';
 import { Loader2, Calendar, Trophy, TrendingUp, Star } from 'lucide-react';
 
 export default function HomePage() {
   const { filteredEvents, setEvents, loadFavorites, updateEventScores, events } = useEventStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, isLoading } = useQuery({
+    queryKey: sportsQueryKeys.upcomingEvents(),
+    queryFn: () => fetchUpcomingEvents(),
+  });
 
   useEffect(() => {
     loadFavorites();
-    loadEvents();
 
     // Simulated live updates - update scores every 10 seconds
     const interval = setInterval(() => {
@@ -24,17 +27,11 @@ export default function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadEvents = async () => {
-    setIsLoading(true);
-    try {
-      const events = await fetchUpcomingEvents();
-      setEvents(events);
-    } catch (error) {
-      console.error('Failed to load events:', error);
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (data) {
+      setEvents(data);
     }
-  };
+  }, [data, setEvents]);
 
   const simulateLiveUpdates = () => {
     // Randomly update scores for "live" events

@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { ArrowLeft, MapPin, Calendar, Clock, Heart, TrendingUp, BarChart3 } from 'lucide-react';
 import { SportEvent, useEventStore } from '@/stores/eventStore';
-import { fetchEventDetails } from '@/services/sportsApi';
+import { fetchEventDetails, sportsQueryKeys } from '@/services/sportsApi';
 import { format, parseISO } from 'date-fns';
 
 type PageProps = {
@@ -12,29 +13,21 @@ type PageProps = {
 };
 
 export default function EventDetailPage({ params }: PageProps) {
-  const [event, setEvent] = useState<SportEvent | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [eventId, setEventId] = useState<string | null>(null);
   const { favorites, toggleFavorite } = useEventStore();
+  const { data: event, isLoading } = useQuery<SportEvent | null>({
+    queryKey: sportsQueryKeys.eventDetails(eventId ?? ''),
+    queryFn: () => fetchEventDetails(eventId ?? ''),
+    enabled: !!eventId,
+  });
 
   useEffect(() => {
     params.then((p) => {
-      loadEvent(p.id);
+      setEventId(p.id);
     });
   }, [params]);
 
-  const loadEvent = async (id: string) => {
-    setIsLoading(true);
-    try {
-      const data = await fetchEventDetails(id);
-      setEvent(data);
-    } catch (error) {
-      console.error('Failed to load event:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (isLoading) {
+  if (isLoading || !eventId) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
