@@ -1,6 +1,6 @@
 # Sports Event Dashboard
 
-A full-featured web dashboard for sports events and results, built with Next.js 15, TypeScript, Tailwind CSS, and Zustand. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
+A full-featured web dashboard for sports events and results, built with Next.js 16.1, TypeScript 5.9, Tailwind CSS 4.1, and Zustand 5.0. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
 
 ## Features
 
@@ -15,13 +15,13 @@ A full-featured web dashboard for sports events and results, built with Next.js 
 
 ## Tech Stack
 
-- **Framework**: Next.js 15+ (App Router) with React Compiler ⚡
-- **Language**: TypeScript 5.7+ (comprehensive type definitions)
-- **Styling**: Tailwind CSS 3.4+
-- **State Management**: Zustand 5+
+- **Framework**: Next.js 16.1 (App Router) with React Compiler ⚡
+- **Language**: TypeScript 5.9 (comprehensive type definitions)
+- **Styling**: Tailwind CSS 4.1
+- **State Management**: Zustand 5.0
 - **API**: TheSportsDB (free sports API) with mock data fallback
-- **Testing**: Jest 30.2.0 + React Testing Library 16+
-- **Code Quality**: ESLint 9+ + Prettier 3.4+
+- **Testing**: Jest 30.2 + React Testing Library 16.3
+- **Code Quality**: ESLint 9.39 + Prettier 3.8
 
 ## Getting Started
 
@@ -81,32 +81,103 @@ pnpm dev
 
 \`\`\`
 sports-event-dashboard/
-├── app/ # Next.js App Router
-│ ├── event/[id]/ # Event detail page
-│ ├── favorites/ # Favorites page
-│ ├── login/ # Login page
-│ ├── register/ # Register page
-│ ├── layout.tsx # Root layout
-│ ├── page.tsx # Home page
-│ └── not-found.tsx # 404 page
 ├── src/
-│ ├── components/ # Reusable components
-│ │ ├── ui/ # shadcn/ui components
-│ │ ├── AppLayout.tsx # Main layout wrapper
-│ │ ├── EventCard.tsx # Event card component
-│ │ ├── EventFilters.tsx
-│ │ └── Providers.tsx # Context providers
-│ ├── stores/ # Zustand stores
-│ │ ├── authStore.ts
-│ │ ├── eventStore.ts
-│ │ └── themeStore.ts
-│ ├── services/ # API services
-│ │ └── sportsApi.ts
-│ └── styles/ # Global styles
-├── **tests**/ # Test files
-├── public/ # Static assets
+│ ├── app/                           # Next.js App Router (route handlers)
+│ │ ├── event/[id]/
+│ │ │ └── page.tsx                   # Event detail RSC (async)
+│ │ ├── favorites/
+│ │ │ └── page.tsx                   # Favorites RSC (async)
+│ │ ├── login/
+│ │ │ └── page.tsx                   # Login RSC (async)
+│ │ ├── register/
+│ │ │ └── page.tsx                   # Register RSC (async)
+│ │ ├── layout.tsx                   # Root layout (server)
+│ │ ├── page.tsx                     # Home RSC (async)
+│ │ ├── not-found.tsx                # 404 page
+│ │ └── not-found.test.tsx           # Colocated tests
+│ ├── features/                      # Feature-based organization
+│ │ ├── events/
+│ │ │ ├── components/
+│ │ │ │ ├── EventsView.tsx           # Home page logic (client)
+│ │ │ │ ├── EventDetailView.tsx      # Detail page logic (client)
+│ │ │ │ ├── EventCard.tsx            # Event card component (client)
+│ │ │ │ └── EventFilters.tsx         # Filter UI component (client)
+│ │ │ ├── services/
+│ │ │ │ └── sportsApi.ts             # API integration + React Query keys
+│ │ │ └── store/
+│ │ │   └── eventsStore.ts            # Zustand events state
+│ │ ├── auth/
+│ │ │ ├── components/
+│ │ │ │ ├── LoginForm.tsx            # Login form component (client)
+│ │ │ │ └── RegisterForm.tsx         # Register form component (client)
+│ │ │ └── store/
+│ │ │   └── authStore.ts             # Zustand auth state
+│ │ ├── favorites/
+│ │ │ └── components/
+│ │ │   └── FavoritesView.tsx        # Favorites page logic (client)
+│ │ └── shared/
+│ │   ├── components/
+│ │   │ ├── AppLayout.tsx            # Navigation + layout (client)
+│ │   │ ├── Providers.tsx            # React Query + auth init (client)
+│ │   │ └── LoadingSpinner.tsx       # Loading state component
+│ │   ├── store/
+│ │   │ └── themeStore.ts            # Theme state
+│ │   └── ui/                        # shadcn/ui components
+│ └── styles/                        # Global styles (Tailwind, fonts, theme)
+├── __mocks__/                       # Shared mock data
+├── public/                          # Static assets
+├── jest.config.mjs                  # Jest testing configuration
+├── tsconfig.json                    # TypeScript configuration (strict)
 └── package.json
 \`\`\`
+
+## Architecture: Server & Client Components
+
+### Page Components (src/app)
+
+All page components use **async Server Components (RSC)** for:
+- ✅ Server-side rendering (better SEO, faster initial load)
+- ✅ Direct database access (when needed)
+- ✅ Reduced JavaScript bundle size
+- ✅ Cleaner routing logic (max ~10 lines per page)
+
+Example: [page.tsx](src/app/page.tsx) imports and renders `<EventsView />` (client component)
+
+\`\`\`tsx
+import { EventsView } from '@/features/events/components/EventsView';
+
+export default function HomePage() {
+  return <EventsView />;
+}
+\`\`\`
+
+### Feature Components (src/features)
+
+Business logic is extracted into **client components** (`'use client'`) organized by feature:
+
+- **EventsView** - Home page: fetches events, manages filters, live score updates
+- **EventDetailView** - Detail page: displays match info, odds, team statistics
+- **FavoritesView** - Favorites page: filters events from favorites array
+- **LoginForm** - Login form: validation and authentication
+- **RegisterForm** - Register form: multi-field validation
+
+### Consistent Naming
+
+- **Components**: `[Feature]View.tsx` (containers with logic) or `[Feature]Form.tsx` (forms)
+- **Stores**: `[feature]Store.ts` (Zustand state management)
+- **Services**: `[feature]Api.ts` (API integration, React Query keys)
+- **Hooks**: `use[Feature|Entity]` (custom React hooks)
+- **Event Handlers**: `handle[Action]` (form submissions, clicks)
+- **Utilities**: `[verb][Entity]` (getUniqueSports, formatDate, parseISO)
+
+## Design Principles
+
+- **Server-First**: Use Server Components by default, client components only when needed (interactivity, state)
+- **Feature-Based**: Organize code by feature/domain, not by layer (events, auth, favorites)
+- **Separation of Concerns**: Page routing (RSC) → Business logic (client components) → State (stores) → Services (API)
+- **Type Safety**: Full TypeScript coverage, strict mode enabled, no `any` types
+- **Consistency**: Arrow functions, consistent naming conventions, same patterns across features
+- **Performance**: Minimal JavaScript, optimized bundle size, server-side rendering when possible
 
 ## Features Walkthrough
 
@@ -155,7 +226,7 @@ Run tests with:
 yarn test
 \`\`\`
 
-Tests are written using Jest and React Testing Library. Example test files are in the \`**tests**\` directory.
+Tests are written using Jest and React Testing Library and colocated next to the components or pages they cover using \`*.test.tsx\`.
 
 ## Code Quality
 

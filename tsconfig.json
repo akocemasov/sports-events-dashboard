@@ -25,6 +25,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@/mocks/*": [
+        "./__mocks__/*"
       ]
     },
     "forceConsistentCasingInFileNames": true,
