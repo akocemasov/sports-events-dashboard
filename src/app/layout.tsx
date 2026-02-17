@@ -1,8 +1,10 @@
+import '@/styles/index.css';
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Toaster } from '@/features/shared/ui/Sonner';
-import { Providers } from '@/features/shared/components/Providers';
-import '@/styles/index.css';
+
+import { Providers } from '@/app/providers';
+import { Toaster } from '@/components/ui/Sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 

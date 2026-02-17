@@ -1,4 +1,4 @@
-import { EventDetailView } from '@/features/events/components/EventDetailView';
+import EventDetailView from '@/features/events/components/EventDetailView';
 
 type PageProps = {
   params: Promise<{ id: string }>;

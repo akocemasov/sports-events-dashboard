@@ -82,52 +82,59 @@ pnpm dev
 \`\`\`
 sports-event-dashboard/
 ├── src/
-│ ├── app/                           # Next.js App Router (route handlers)
+│ ├── app/ # Next.js App Router (route handlers)
 │ │ ├── event/[id]/
-│ │ │ └── page.tsx                   # Event detail RSC (async)
+│ │ │ └── page.tsx # Event detail RSC (async)
 │ │ ├── favorites/
-│ │ │ └── page.tsx                   # Favorites RSC (async)
+│ │ │ └── page.tsx # Favorites RSC (async)
 │ │ ├── login/
-│ │ │ └── page.tsx                   # Login RSC (async)
+│ │ │ └── page.tsx # Login RSC (async)
 │ │ ├── register/
-│ │ │ └── page.tsx                   # Register RSC (async)
-│ │ ├── layout.tsx                   # Root layout (server)
-│ │ ├── page.tsx                     # Home RSC (async)
-│ │ ├── not-found.tsx                # 404 page
-│ │ └── not-found.test.tsx           # Colocated tests
-│ ├── features/                      # Feature-based organization
+│ │ │ └── page.tsx # Register RSC (async)
+│ │ ├── layout.tsx # Root layout (server)
+│ │ ├── page.tsx # Home RSC (async)
+│ │ ├── not-found.tsx # 404 page
+│ │ └── not-found.test.tsx # Colocated tests
+│ ├── features/ # Feature-based organization
 │ │ ├── events/
 │ │ │ ├── components/
-│ │ │ │ ├── EventsView.tsx           # Home page logic (client)
-│ │ │ │ ├── EventDetailView.tsx      # Detail page logic (client)
-│ │ │ │ ├── EventCard.tsx            # Event card component (client)
-│ │ │ │ └── EventFilters.tsx         # Filter UI component (client)
+│ │ │ │ ├── EventsView.tsx # Home page logic (client)
+│ │ │ │ ├── EventDetailView.tsx # Detail page logic (client)
+│ │ │ │ ├── EventCard.tsx # Event card component (client)
+│ │ │ │ └── EventFilters.tsx # Filter UI component (client)
 │ │ │ ├── services/
-│ │ │ │ └── sportsApi.ts             # API integration + React Query keys
+│ │ │ │ └── eventsApi.ts # API integration + React Query keys
 │ │ │ └── store/
-│ │ │   └── eventsStore.ts            # Zustand events state
+│ │ │ └── eventsStore.ts # Zustand events state
 │ │ ├── auth/
 │ │ │ ├── components/
-│ │ │ │ ├── LoginForm.tsx            # Login form component (client)
-│ │ │ │ └── RegisterForm.tsx         # Register form component (client)
-│ │ │ └── store/
-│ │ │   └── authStore.ts             # Zustand auth state
-│ │ ├── favorites/
-│ │ │ └── components/
-│ │ │   └── FavoritesView.tsx        # Favorites page logic (client)
-│ │ └── shared/
-│ │   ├── components/
-│ │   │ ├── AppLayout.tsx            # Navigation + layout (client)
-│ │   │ ├── Providers.tsx            # React Query + auth init (client)
-│ │   │ └── LoadingSpinner.tsx       # Loading state component
-│ │   ├── store/
-│ │   │ └── themeStore.ts            # Theme state
-│ │   └── ui/                        # shadcn/ui components
-│ └── styles/                        # Global styles (Tailwind, fonts, theme)
-├── __mocks__/                       # Shared mock data
-├── public/                          # Static assets
-├── jest.config.mjs                  # Jest testing configuration
-├── tsconfig.json                    # TypeScript configuration (strict)
+│ │ │ │ ├── LoginForm.tsx # Login form component (client)
+│ │ │ │ └── RegisterForm.tsx # Register form component (client)
+│ │ └── favorites/
+│ │ └── components/
+│ │ └── FavoritesView.tsx # Favorites page logic (client)
+│ ├── store/ # Zustand stores (centralized)
+│ │ ├── authStore.ts # Auth state
+│ │ ├── eventsStore.ts # Events state
+│ │ └── themeStore.ts # Theme state
+│ ├── hooks/ # Custom React hooks
+│ │ └── useMobile.ts # Mobile viewport hook
+│ ├── utils/ # Utility functions
+│ │ └── cn.ts # Class name merger
+│ ├── components/ # Reusable components
+│ │ ├── AppLayout/ # Navigation + layout (client)
+│ │ │ ├── AppLayout.tsx
+│ │ │ ├── AppHeader.tsx
+│ │ │ ├── AppFooter.tsx
+│ │ │ ├── AppShell.tsx
+│ │ │ └── index.ts
+│ │ ├── [Other components]
+│ │ └── ui/ # shadcn/ui components
+│ └── styles/ # Global styles (Tailwind, fonts, theme)
+├── **mocks**/ # Shared mock data
+├── public/ # Static assets
+├── jest.config.mjs # Jest testing configuration
+├── tsconfig.json # TypeScript configuration (strict)
 └── package.json
 \`\`\`
 
@@ -136,6 +143,7 @@ sports-event-dashboard/
 ### Page Components (src/app)
 
 All page components use **async Server Components (RSC)** for:
+
 - ✅ Server-side rendering (better SEO, faster initial load)
 - ✅ Direct database access (when needed)
 - ✅ Reduced JavaScript bundle size
@@ -144,10 +152,10 @@ All page components use **async Server Components (RSC)** for:
 Example: [page.tsx](src/app/page.tsx) imports and renders `<EventsView />` (client component)
 
 \`\`\`tsx
-import { EventsView } from '@/features/events/components/EventsView';
+import EventsView from '@/features/events/components/EventsView';
 
 export default function HomePage() {
-  return <EventsView />;
+return <EventsView />;
 }
 \`\`\`
 
@@ -226,7 +234,7 @@ Run tests with:
 yarn test
 \`\`\`
 
-Tests are written using Jest and React Testing Library and colocated next to the components or pages they cover using \`*.test.tsx\`.
+Tests are written using Jest and React Testing Library and colocated next to the components or pages they cover using \`\*.test.tsx\`.
 
 ## Code Quality
 

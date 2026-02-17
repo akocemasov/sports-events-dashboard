@@ -1,4 +1,4 @@
-import { SportEvent } from '@/features/events/store/eventsStore';
+import { SportEvent } from '@/store/eventsStore';
 
 export const mockEvents: SportEvent[] = [
   {

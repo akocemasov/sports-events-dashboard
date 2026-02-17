@@ -1,5 +1,7 @@
 import nextConfig from 'eslint-config-next';
 import tseslint from '@typescript-eslint/eslint-plugin';
+import unusedImports from 'eslint-plugin-unused-imports';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 const config = [
   ...nextConfig,
@@ -10,9 +12,11 @@ const config = [
     },
   },
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     plugins: {
       '@typescript-eslint': tseslint,
+      'unused-imports': unusedImports,
+      'simple-import-sort': simpleImportSort,
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -24,6 +28,9 @@ const config = [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      'unused-imports/no-unused-imports': 'error',
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
 ];
