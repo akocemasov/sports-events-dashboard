@@ -33,110 +33,62 @@ A full-featured web dashboard for sports events and results, built with Next.js 
 ### Installation
 
 1. Clone the repository:
-   \`\`\`bash
+
+   ```bash
    git clone <repository-url>
    cd sports-event-dashboard
-   \`\`\`
+   ```
 
 2. Install dependencies:
-   \`\`\`bash
+
+   ```bash
    yarn install
-
-# or
-
-npm install
-
-# or
-
-pnpm install
-\`\`\`
+   ```
 
 3. Run the development server:
-   \`\`\`bash
+
+   ```bash
    yarn dev
-
-# or
-
-npm run dev
-
-# or
-
-pnpm dev
-\`\`\`
+   ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Available Scripts
 
-- \`yarn dev\` - Start development server
-- \`yarn build\` - Build for production
-- \`yarn start\` - Start production server
-- \`yarn lint\` - Run ESLint and Prettier checks
-- \`yarn lint:fix\` - Fix ESLint and Prettier issues
-- \`yarn typecheck\` - Run TypeScript type checking
-- \`yarn test\` - Run tests in watch mode
-- \`yarn test:ci\` - Run tests in CI mode
+- `yarn dev` - Start development server
+- `yarn build` - Build for production
+- `yarn start` - Start production server
+- `yarn lint` - Run ESLint and Prettier checks
+- `yarn lint:fix` - Fix ESLint and Prettier issues
+- `yarn typecheck` - Run TypeScript type checking
+- `yarn test` - Run tests in watch mode
+- `yarn test:ci` - Run tests in CI mode
 
 ## Project Structure
 
-\`\`\`
-sports-event-dashboard/
-├── src/
-│ ├── app/ # Next.js App Router (route handlers)
-│ │ ├── event/[id]/
-│ │ │ └── page.tsx # Event detail RSC (async)
-│ │ ├── favorites/
-│ │ │ └── page.tsx # Favorites RSC (async)
-│ │ ├── login/
-│ │ │ └── page.tsx # Login RSC (async)
-│ │ ├── register/
-│ │ │ └── page.tsx # Register RSC (async)
-│ │ ├── layout.tsx # Root layout (server)
-│ │ ├── page.tsx # Home RSC (async)
-│ │ ├── not-found.tsx # 404 page
-│ │ └── not-found.test.tsx # Colocated tests
-│ ├── features/ # Feature-based organization
-│ │ ├── events/
-│ │ │ ├── components/
-│ │ │ │ ├── EventsView.tsx # Home page logic (client)
-│ │ │ │ ├── EventDetailView.tsx # Detail page logic (client)
-│ │ │ │ ├── EventCard.tsx # Event card component (client)
-│ │ │ │ └── EventFilters.tsx # Filter UI component (client)
-│ │ │ ├── services/
-│ │ │ │ └── eventsApi.ts # API integration + React Query keys
-│ │ │ └── store/
-│ │ │ └── eventsStore.ts # Zustand events state
-│ │ ├── auth/
-│ │ │ ├── components/
-│ │ │ │ ├── LoginForm.tsx # Login form component (client)
-│ │ │ │ └── RegisterForm.tsx # Register form component (client)
-│ │ └── favorites/
-│ │ └── components/
-│ │ └── FavoritesView.tsx # Favorites page logic (client)
-│ ├── store/ # Zustand stores (centralized)
-│ │ ├── authStore.ts # Auth state
-│ │ ├── eventsStore.ts # Events state
-│ │ └── themeStore.ts # Theme state
-│ ├── hooks/ # Custom React hooks
-│ │ └── useMobile.ts # Mobile viewport hook
-│ ├── utils/ # Utility functions
-│ │ └── cn.ts # Class name merger
-│ ├── components/ # Reusable components
-│ │ ├── AppLayout/ # Navigation + layout (client)
-│ │ │ ├── AppLayout.tsx
-│ │ │ ├── AppHeader.tsx
-│ │ │ ├── AppFooter.tsx
-│ │ │ ├── AppShell.tsx
-│ │ │ └── index.ts
-│ │ ├── [Other components]
-│ │ └── ui/ # shadcn/ui components
-│ └── styles/ # Global styles (Tailwind, fonts, theme)
-├── **mocks**/ # Shared mock data
-├── public/ # Static assets
-├── jest.config.mjs # Jest testing configuration
-├── tsconfig.json # TypeScript configuration (strict)
-└── package.json
-\`\`\`
+```
+src/
+├── app/                    # Next.js App Router (pages)
+│   ├── event/[id]/
+│   ├── favorites/
+│   ├── login/ & register/
+│   └── layout.tsx
+├── features/               # Feature-based organization
+│   ├── events/
+│   ├── auth/
+│   └── favorites/
+├── store/                  # Zustand state management
+│   ├── eventsStore.ts
+│   ├── authStore.ts
+│   └── themeStore.ts
+├── components/             # Reusable UI components
+│   ├── AppLayout/
+│   └── ui/
+├── hooks/                  # Custom React hooks
+├── utils/                  # Utility functions
+├── types/                  # TypeScript type definitions
+└── styles/                 # Global styles
+```
 
 ## Architecture: Server & Client Components
 
@@ -145,19 +97,8 @@ sports-event-dashboard/
 All page components use **async Server Components (RSC)** for:
 
 - ✅ Server-side rendering (better SEO, faster initial load)
-- ✅ Direct database access (when needed)
 - ✅ Reduced JavaScript bundle size
 - ✅ Cleaner routing logic (max ~10 lines per page)
-
-Example: [page.tsx](src/app/page.tsx) imports and renders `<EventsView />` (client component)
-
-\`\`\`tsx
-import EventsView from '@/features/events/components/EventsView';
-
-export default function HomePage() {
-return <EventsView />;
-}
-\`\`\`
 
 ### Feature Components (src/features)
 
@@ -176,14 +117,14 @@ Business logic is extracted into **client components** (`'use client'`) organize
 - **Services**: `[feature]Api.ts` (API integration, React Query keys)
 - **Hooks**: `use[Feature|Entity]` (custom React hooks)
 - **Event Handlers**: `handle[Action]` (form submissions, clicks)
-- **Utilities**: `[verb][Entity]` (getUniqueSports, formatDate, parseISO)
+- **Utilities**: `[verb][Entity]` (getUniqueSports, formatDate)
 
 ## Design Principles
 
 - **Server-First**: Use Server Components by default, client components only when needed (interactivity, state)
 - **Feature-Based**: Organize code by feature/domain, not by layer (events, auth, favorites)
 - **Separation of Concerns**: Page routing (RSC) → Business logic (client components) → State (stores) → Services (API)
-- **Type Safety**: Full TypeScript coverage, strict mode enabled, no `any` types
+- **Type Safety**: Full TypeScript coverage, strict mode enabled
 - **Consistency**: Arrow functions, consistent naming conventions, same patterns across features
 - **Performance**: Minimal JavaScript, optimized bundle size, server-side rendering when possible
 
@@ -214,7 +155,6 @@ Business logic is extracted into **client components** (`'use client'`) organize
 
 - Light and dark themes
 - Automatically detects system preference
-- Smooth transitions between themes
 - Theme preference persisted in localStorage
 
 ### Live Updates
@@ -230,25 +170,26 @@ This project uses [TheSportsDB](https://www.thesportsdb.com/) free API for sport
 ## Testing
 
 Run tests with:
-\`\`\`bash
-yarn test
-\`\`\`
 
-Tests are written using Jest and React Testing Library and colocated next to the components or pages they cover using \`\*.test.tsx\`.
+```bash
+yarn test
+```
+
+Tests are written using Jest and React Testing Library and colocated next to the components or pages they cover using `*.test.tsx`.
 
 ## Code Quality
 
 - **ESLint**: Configured with Next.js recommended rules
 - **Prettier**: Consistent code formatting
 - **TypeScript**: Strict type checking enabled
-- **No \`any\` types**: Comprehensive type definitions throughout
 
 Run checks:
-\`\`\`bash
+
+```bash
 yarn lint # Check for issues
 yarn lint:fix # Auto-fix issues
 yarn typecheck # Type checking
-\`\`\`
+```
 
 ## Deployment
 
@@ -261,25 +202,26 @@ yarn typecheck # Type checking
 ### Other Platforms
 
 Build the production bundle:
-\`\`\`bash
+
+```bash
 yarn build
-\`\`\`
+```
 
 Then start the production server:
-\`\`\`bash
+
+```bash
 yarn start
-\`\`\`
+```
 
 ## Environment Variables
 
-Create a \`.env.local\` file:
-\`\`\`
+Create a `.env.local` file:
+
+```
 
 # No environment variables required for basic functionality
 
-# Optional: Add custom API keys if using different sports API
-
-\`\`\`
+```
 
 ## Browser Support
 
@@ -294,8 +236,7 @@ This project is for portfolio demonstration purposes.
 
 ## Author
 
-Built with ❤️ using Next.js, TypeScript, and modern React practices.
+**Alex Cocemasov**
 
----
-
-**Note**: This is a portfolio project demonstrating modern web development practices. The authentication system is frontend-only and should not be used in production without a proper backend.
+- **GitHub**: [github.com/akocemasov](https://github.com/akocemasov)
+- **Email**: [a.cocemasov@gmail.com](mailto:a.cocemasov@gmail.com)
