@@ -9,8 +9,8 @@ import { Toaster } from '@/components/ui/Sonner';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Sports Event Dashboard',
-  description: 'A full-featured web dashboard for sports events and results',
+  title: 'Sports Events Dashboard',
+  description: 'A demo web dashboard for sports events and results',
 };
 
 export default function RootLayout({

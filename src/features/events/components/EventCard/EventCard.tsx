@@ -4,10 +4,9 @@ import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-import { FavoriteButton } from '@/components/FavoriteButton';
-import { LiveIndicator } from '@/components/LiveIndicator';
-import { SportEvent } from '@/store/eventsStore';
+import { isEventFinished, isEventLive } from '@/features/events/utils/parse';
 import { useEventsStore } from '@/store/eventsStore';
+import { SportEvent } from '@/types/events';
 
 import { EventCardFooter } from './EventCardFooter';
 import { EventCardHeader } from './EventCardHeader';
@@ -40,24 +39,24 @@ export const EventCard = ({ event }: EventCardProps) => {
     }
   };
 
-  const isLive = event.strStatus === 'Live' || event.strStatus === 'In Progress';
-  const isFinished = event.strStatus === 'Match Finished';
+  const isLive = isEventLive(event.strStatus);
+  const isFinished = isEventFinished(event.strStatus);
 
   return (
-    <div className="group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all">
-      {/* Live indicator */}
-      {isLive && <LiveIndicator className="absolute top-3 left-3 z-10" />}
-
-      {/* Favorite button */}
-      <FavoriteButton
+    <Link
+      href={`/event/${event.idEvent}`}
+      className="flex flex-col bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all"
+    >
+      <EventCardHeader
+        sport={event.strSport}
+        league={event.strLeague}
+        leagueBadge={event.strLeagueBadge}
+        isLive={isLive}
         isFavorite={isFavorite}
-        onToggle={handleFavoriteToggle}
-        className="absolute top-3 right-3 z-10"
+        onFavoriteToggle={handleFavoriteToggle}
       />
 
-      <Link href={`/event/${event.idEvent}`} className="block">
-        <EventCardHeader sport={event.strSport} league={event.strLeague} />
-
+      <div className="flex-1 flex items-center">
         <EventCardMatchInfo
           homeTeam={event.strHomeTeam}
           awayTeam={event.strAwayTeam}
@@ -65,13 +64,13 @@ export const EventCard = ({ event }: EventCardProps) => {
           awayScore={event.intAwayScore}
           isFinished={isFinished}
         />
+      </div>
 
-        <EventCardFooter
-          date={formatDate(event.dateEvent)}
-          time={event.strTime?.substring(0, 5) || 'TBD'}
-          venue={event.strVenue}
-        />
-      </Link>
-    </div>
+      <EventCardFooter
+        date={formatDate(event.dateEvent)}
+        time={event.strTime?.substring(0, 5) || 'TBD'}
+        venue={event.strVenue}
+      />
+    </Link>
   );
 };

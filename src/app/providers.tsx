@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode, useState } from 'react';
 
 import AppLayout from '@/components/AppLayout';
+import { QUERY_REFETCH_INTERVAL,QUERY_STALE_TIME } from '@/config/constants';
 
 type ProvidersProps = {
   children: ReactNode;
@@ -15,8 +16,9 @@ export function Providers({ children }: ProvidersProps) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 5 * 60 * 1000,
+            staleTime: QUERY_STALE_TIME,
             refetchOnWindowFocus: false,
+            refetchInterval: QUERY_REFETCH_INTERVAL,
           },
         },
       })

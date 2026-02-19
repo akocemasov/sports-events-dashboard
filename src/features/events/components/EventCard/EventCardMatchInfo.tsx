@@ -16,7 +16,7 @@ export const EventCardMatchInfo = ({
   isFinished,
 }: EventCardMatchInfoProps) => {
   return (
-    <div className="px-4 pb-4">
+    <div className="w-full p-4">
       <div className="flex items-center justify-between gap-4">
         {/* Home team */}
         <div className="flex-1 text-right">

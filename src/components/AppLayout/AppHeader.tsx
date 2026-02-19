@@ -1,5 +1,8 @@
-import { Heart, LogOut, Moon, Sun, Trophy, User } from 'lucide-react';
+import { Heart, LogOut, Moon, Sun, User } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
+
+import { APP_NAME } from '@/config/constants';
 
 type AppHeaderProps = {
   pathname: string;
@@ -25,8 +28,8 @@ export function AppHeader({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
-            <Trophy className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-            <span className="text-xl font-bold text-gray-900 dark:text-white">SportsDash</span>
+            <Image src="/favicon.ico" alt={APP_NAME} width={40} height={40} />
+            <span className="text-xl font-bold text-gray-900 dark:text-white">{APP_NAME}</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">

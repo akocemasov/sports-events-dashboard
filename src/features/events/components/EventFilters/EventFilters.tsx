@@ -22,9 +22,6 @@ export const EventFilters = () => {
       sport: 'all',
       league: 'all',
       searchQuery: '',
-      sortBy: 'time',
-      dateFrom: '',
-      dateTo: '',
     });
   };
 
@@ -36,7 +33,6 @@ export const EventFilters = () => {
         placeholder="Search by team or event name..."
       />
 
-      {/* Filter toggle button (mobile) */}
       <Button
         onClick={() => setShowFilters(!showFilters)}
         variant="ghost"
@@ -46,17 +42,14 @@ export const EventFilters = () => {
         {showFilters ? 'Hide Filters' : 'Show Filters'}
       </Button>
 
-      {/* Filters */}
       <div className={`${showFilters ? 'block' : 'hidden md:block'}`}>
         <FilterDropdowns
           sports={sports}
           leagues={leagues}
           selectedSport={filters.sport}
           selectedLeague={filters.league}
-          selectedSortBy={filters.sortBy}
           onSportChange={(sport) => setFilters({ sport })}
           onLeagueChange={(league) => setFilters({ league })}
-          onSortByChange={(sortBy) => setFilters({ sortBy })}
           onClearFilters={handleClearFilters}
         />
       </div>

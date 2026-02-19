@@ -2,18 +2,17 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { format, parseISO } from 'date-fns';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 
 import { LoadingState } from '@/components/LoadingState';
 import { eventsQueryKeys, fetchEventDetails } from '@/features/events/services/eventsApi';
-import { SportEvent, useEventsStore } from '@/store/eventsStore';
+import { isEventFinished, isEventLive } from '@/features/events/utils/parse';
+import { useEventsStore } from '@/store/eventsStore';
+import { SportEvent } from '@/types/events';
 
-import { BettingOdds } from './BettingOdds';
+import { BackToEventsLink } from './BackToEventsLink';
+import { EventDetailFooter } from './EventDetailFooter';
 import { EventDetailHeader } from './EventDetailHeader';
-import { EventInfo } from './EventInfo';
-import { EventMatchDetails } from './EventMatchDetails';
-import { TeamStatistics } from './TeamStatistics';
+import { EventDetailMatchInfo } from './EventDetailMatchInfo';
 
 interface EventDetailViewProps {
   eventId: string;
@@ -35,101 +34,54 @@ export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Event not found</h2>
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to events
-        </Link>
+        <BackToEventsLink />
       </div>
     );
   }
 
   const isFavorite = favorites.includes(event.idEvent);
-  const isLive = event.strStatus === 'Live' || event.strStatus === 'In Progress';
-  const isFinished = event.strStatus === 'Match Finished';
+  const isLive = isEventLive(event.strStatus);
+  const isFinished = isEventFinished(event.strStatus);
 
-  // Mock odds data
-  const odds = generateMockOdds();
-
-  // Mock team stats
-  const { homeStats, awayStats } = generateMockTeamStats();
-
-  const handleFavoriteToggle = () => {
+  const handleFavoriteToggle = (_e: React.MouseEvent) => {
     toggleFavorite(event.idEvent);
   };
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      {/* Back button */}
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to events
-      </Link>
+      <BackToEventsLink />
 
-      {/* Event header */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="p-6 sm:p-8">
-          <EventDetailHeader
-            sport={event.strSport}
-            league={event.strLeague}
-            isLive={isLive}
-            isFavorite={isFavorite}
-            onFavoriteToggle={handleFavoriteToggle}
-          />
+        <EventDetailHeader
+          sport={event.strSport}
+          league={event.strLeague}
+          leagueBadge={event.strLeagueBadge}
+          isLive={isLive}
+          isFavorite={isFavorite}
+          onFavoriteToggle={handleFavoriteToggle}
+        />
 
-          <EventMatchDetails
+        <div className="p-6">
+          <EventDetailMatchInfo
+            eventThumb={event.strThumb}
             homeTeam={event.strHomeTeam}
             awayTeam={event.strAwayTeam}
             homeScore={event.intHomeScore}
             awayScore={event.intAwayScore}
             status={event.strStatus}
             isFinished={isFinished}
-          />
-
-          <EventInfo
-            date={format(parseISO(event.dateEvent), 'MMMM dd, yyyy')}
-            time={event.strTime?.substring(0, 5) || 'TBD'}
-            venue={event.strVenue}
+            homeTeamBadge={event.strHomeTeamBadge}
+            awayTeamBadge={event.strAwayTeamBadge}
           />
         </div>
+
+        <EventDetailFooter
+          date={format(parseISO(event.dateEvent), 'MMMM dd, yyyy')}
+          time={event.strTime?.substring(0, 5) || 'TBD'}
+          venue={event.strVenue}
+          country={event.strCountry}
+        />
       </div>
-
-      <BettingOdds homeOdds={odds.home} drawOdds={odds.draw} awayOdds={odds.away} />
-
-      <TeamStatistics
-        homeTeamName={event.strHomeTeam}
-        awayTeamName={event.strAwayTeam}
-        homeStats={homeStats}
-        awayStats={awayStats}
-      />
     </div>
   );
 };
-
-const generateMockOdds = () => ({
-  home: (2.5 + Math.random()).toFixed(2),
-  draw: (3.2 + Math.random()).toFixed(2),
-  away: (2.8 + Math.random()).toFixed(2),
-});
-
-const generateMockTeamStats = () => ({
-  homeStats: {
-    wins: Math.floor(Math.random() * 15) + 5,
-    losses: Math.floor(Math.random() * 10),
-    draws: Math.floor(Math.random() * 8),
-    goalsScored: Math.floor(Math.random() * 40) + 20,
-    goalsConceded: Math.floor(Math.random() * 30) + 10,
-  },
-  awayStats: {
-    wins: Math.floor(Math.random() * 15) + 5,
-    losses: Math.floor(Math.random() * 10),
-    draws: Math.floor(Math.random() * 8),
-    goalsScored: Math.floor(Math.random() * 40) + 20,
-    goalsConceded: Math.floor(Math.random() * 30) + 10,
-  },
-});

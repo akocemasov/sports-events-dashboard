@@ -7,7 +7,7 @@ export const EventsHeader = () => {
         Sports Events Dashboard
       </h1>
       <p className="text-gray-600 dark:text-gray-400">
-        Browse upcoming matches and live events from around the world
+        Browse sports events from around the world
       </p>
     </div>
   );

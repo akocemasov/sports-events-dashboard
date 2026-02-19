@@ -1,25 +1,25 @@
-# Sports Event Dashboard
+# Sports Events Dashboard
 
-A full-featured web dashboard for sports events and results, built with Next.js 16.1, TypeScript 5.9, Tailwind CSS 4.1, and Zustand 5.0. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
+A demo web dashboard for sports events and results, built with Next.js 16.1, TypeScript 5.9, Tailwind CSS 4.1, and Zustand 5.0. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
 
 ## Features
 
-- ✨ **Event Listing & Filtering**: Browse upcoming sports events with filters by sport, league, and date
-- 🔍 **Search & Sort**: Search events by teams or event names, sort by time, popularity, or odds
-- 📊 **Event Detail Pages**: View detailed match information, team statistics, and odds comparison
+- ✨ **Event Listing & Filtering**: Browse sports events with filters by sport, league and date
+- 🔍 **Search**: Search events by teams or event names
+- 📊 **Event Detail Pages**: View detailed match information
 - ❤️ **Favorites/Watchlist**: Save events to your favorites with localStorage persistence
-- 🌓 **Dark/Light Theme**: Toggle between light and dark themes with system preference detection
-- 🔐 **Mock Authentication**: Frontend-only authentication system for portfolio demonstration
-- ⚡ **Simulated Live Updates**: Real-time event updates using setInterval polling (simulates WebSocket)
-- 📱 **Responsive Design**: Mobile-first design that works on all screen sizes
+- 🔄 **Live Updates**: Automatic 30-second background data refresh
+- 🌓 **Dark/Light Theme**: Toggle between themes with system preference detection
+- 🔐 **Mock Authentication**: Frontend-only authentication for demonstration
+- 📱 **Responsive Design**: Works on all screen sizes
 
 ## Tech Stack
 
 - **Framework**: Next.js 16.1 (App Router) with React Compiler ⚡
-- **Language**: TypeScript 5.9 (comprehensive type definitions)
+- **Language**: TypeScript 5.9
 - **Styling**: Tailwind CSS 4.1
-- **State Management**: Zustand 5.0
-- **API**: TheSportsDB (free sports API) with mock data fallback
+- **State Management**: Zustand 5.0 + TanStack Query
+- **API**: TheSportsDB v1 (free tier)
 - **Testing**: Jest 30.2 + React Testing Library 16.3
 - **Code Quality**: ESLint 9.39 + Prettier 3.8
 
@@ -159,13 +159,20 @@ Business logic is extracted into **client components** (`'use client'`) organize
 
 ### Live Updates
 
-- Events marked as "Live" update scores automatically
-- Simulated using setInterval (10-second intervals)
-- Demonstrates real-time update patterns
+- Real-time event status tracking (quarters, innings, halves, finished, etc.)
+- Automatic 30-second background refetch keeps data current
+- Seamless updates without loading spinners
 
 ## API Integration
 
-This project uses [TheSportsDB](https://www.thesportsdb.com/) free API for sports data. If the API is unavailable, the app falls back to comprehensive mock data to ensure functionality.
+This project uses [TheSportsDB](https://www.thesportsdb.com/) free API for sports data with mock data fallback.
+
+**Data Fetching Strategy** (TanStack Query):
+- **Stale Time**: 5 minutes - cached data reused during navigation
+- **Refetch Interval**: 30 seconds - automatic background updates for live scores
+- **UTC Timezone**: All times displayed in UTC as provided by the API
+
+This balances fast navigation with live data updates while minimizing API calls.
 
 ## Testing
 
@@ -225,14 +232,11 @@ Create a `.env.local` file:
 
 ## Browser Support
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+Chrome, Firefox, Safari, Edge (latest as of Feb-2026)
 
 ## License
 
-This project is for portfolio demonstration purposes.
+This project is for demonstration purposes.
 
 ## Author
 

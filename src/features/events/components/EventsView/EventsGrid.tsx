@@ -3,7 +3,7 @@
 import { Calendar } from 'lucide-react';
 
 import EventCard from '@/features/events/components/EventCard';
-import { SportEvent } from '@/store/eventsStore';
+import { SportEvent } from '@/types/events';
 
 interface EventsGridProps {
   events: SportEvent[];

@@ -5,24 +5,20 @@ import { useEffect } from 'react';
 
 import { LoadingState } from '@/components/LoadingState';
 import EventCard from '@/features/events/components/EventCard';
-import { eventsQueryKeys, fetchUpcomingEvents } from '@/features/events/services/eventsApi';
+import { eventsQueryKeys, fetchEventsPerDay } from '@/features/events/services/eventsApi';
 import { useEventsStore } from '@/store/eventsStore';
 
 import { EmptyFavoritesState } from './EmptyFavoritesState';
 import { FavoritesHeader } from './FavoritesHeader';
 
 export const FavoritesView = () => {
-  const { events, favorites, loadFavorites, setEvents } = useEventsStore();
+  const { events, favorites, setEvents } = useEventsStore();
   const favoriteEvents = events.filter((e) => favorites.includes(e.idEvent));
 
   const { data, isLoading } = useQuery({
-    queryKey: eventsQueryKeys.upcomingEvents(),
-    queryFn: () => fetchUpcomingEvents(),
+    queryKey: eventsQueryKeys.eventsPerDay(),
+    queryFn: () => fetchEventsPerDay(),
   });
-
-  useEffect(() => {
-    loadFavorites();
-  }, [loadFavorites]);
 
   useEffect(() => {
     if (data) {

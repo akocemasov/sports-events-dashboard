@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { FormInput } from '@/components/FormInput';
 import { Button } from '@/components/ui/Button';
+import { APP_NAME } from '@/config/constants';
 import { useAuthStore } from '@/store/authStore';
 
 import { AuthHeader } from './AuthHeader';
@@ -60,7 +61,7 @@ export const RegisterForm = () => {
       <div className="max-w-md w-full">
         <AuthHeader
           title="Create an account"
-          subtitle="Join SportsDash to track your favorite events"
+          subtitle={`Join ${APP_NAME} to track your favorite events`}
         />
 
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
