@@ -19,7 +19,7 @@ interface EventDetailViewProps {
 }
 
 export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
-  const { favorites, toggleFavorite } = useEventsStore();
+  const { isFavorite: isFavoriteEvent, toggleFavorite } = useEventsStore();
   const { data: event, isLoading } = useQuery<SportEvent | null>({
     queryKey: eventsQueryKeys.eventDetails(eventId),
     queryFn: () => fetchEventDetails(eventId),
@@ -39,12 +39,13 @@ export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
     );
   }
 
-  const isFavorite = favorites.includes(event.idEvent);
+  const eventDateKey = event.dateEvent;
+  const isFavorite = isFavoriteEvent(event.idEvent, eventDateKey);
   const isLive = isEventLive(event.strStatus);
   const isFinished = isEventFinished(event.strStatus);
 
   const handleFavoriteToggle = (_e: React.MouseEvent) => {
-    toggleFavorite(event.idEvent);
+    toggleFavorite(event.idEvent, eventDateKey);
   };
 
   return (

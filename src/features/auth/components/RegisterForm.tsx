@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { FormInput } from '@/components/FormInput';
 import { Button } from '@/components/ui/Button';
-import { APP_NAME } from '@/config/constants';
+import { APP_NAME } from '@/config/appConfig';
 import { useAuthStore } from '@/store/authStore';
 
 import { AuthHeader } from './AuthHeader';

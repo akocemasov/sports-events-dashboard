@@ -1,8 +1,11 @@
+import { format } from 'date-fns';
 import { Heart, LogOut, Moon, Sun, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { APP_NAME } from '@/config/constants';
+import { Badge } from '@/components/ui/Badge';
+import { APP_NAME } from '@/config/appConfig';
+import { useEventsStore } from '@/store/eventsStore';
 
 type AppHeaderProps = {
   pathname: string;
@@ -21,6 +24,12 @@ export function AppHeader({
   userName,
   onLogout,
 }: AppHeaderProps) {
+  const selectedDate = useEventsStore((state) => state.filters.selectedDate);
+  const favoritesByDate = useEventsStore((state) => state.favoritesByDate);
+
+  const selectedDateKey = format(selectedDate ?? new Date(), 'yyyy-MM-dd');
+  const favoritesCount = favoritesByDate[selectedDateKey]?.length ?? 0;
+
   const isActive = (path: string) => pathname === path;
 
   return (
@@ -52,7 +61,15 @@ export function AppHeader({
               }`}
             >
               <Heart className="w-4 h-4" />
-              Favorites
+              <span className="relative inline-flex">
+                Favorites
+                <Badge
+                  variant="outline"
+                  className="absolute -top-1.5 -right-5 h-4 min-w-4 border-red-500 bg-red-500 px-1 text-[10px] leading-none text-white"
+                >
+                  {favoritesCount}
+                </Badge>
+              </span>
             </Link>
           </nav>
 
@@ -113,7 +130,15 @@ export function AppHeader({
                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
             }`}
           >
-            Favorites
+            <span className="relative inline-flex">
+              Favorites
+              <Badge
+                variant="outline"
+                className="absolute -top-1.5 -right-5 h-4 min-w-4 border-red-500 bg-red-500 px-1 text-[10px] leading-none text-white"
+              >
+                {favoritesCount}
+              </Badge>
+            </span>
           </Link>
         </nav>
       </div>

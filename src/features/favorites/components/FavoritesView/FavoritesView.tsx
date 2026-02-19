@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { format } from 'date-fns';
 
 import { LoadingState } from '@/components/LoadingState';
 import EventCard from '@/features/events/components/EventCard';
@@ -12,19 +12,18 @@ import { EmptyFavoritesState } from './EmptyFavoritesState';
 import { FavoritesHeader } from './FavoritesHeader';
 
 export const FavoritesView = () => {
-  const { events, favorites, setEvents } = useEventsStore();
-  const favoriteEvents = events.filter((e) => favorites.includes(e.idEvent));
+  const { filters, getFavoritesForDate } = useEventsStore();
+  const selectedDateStr = filters.selectedDate
+    ? format(filters.selectedDate, 'yyyy-MM-dd')
+    : format(new Date(), 'yyyy-MM-dd');
+  const favoriteIds = getFavoritesForDate(selectedDateStr);
 
   const { data, isLoading } = useQuery({
-    queryKey: eventsQueryKeys.eventsPerDay(),
-    queryFn: () => fetchEventsPerDay(),
+    queryKey: eventsQueryKeys.eventsPerDay(selectedDateStr),
+    queryFn: () => fetchEventsPerDay(selectedDateStr),
   });
 
-  useEffect(() => {
-    if (data) {
-      setEvents(data);
-    }
-  }, [data, setEvents]);
+  const favoriteEvents = (data ?? []).filter((e) => favoriteIds.includes(e.idEvent));
 
   return (
     <div className="space-y-6">

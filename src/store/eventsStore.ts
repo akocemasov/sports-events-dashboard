@@ -1,32 +1,36 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { FILTER_ALL_VALUE } from '@/config/filterConfig';
 import { EventFilters, SportEvent } from '@/types/events';
 
 interface EventState {
   events: SportEvent[];
-  favorites: string[];
+  favoritesByDate: Record<string, string[]>;
   filters: EventFilters;
 
   setEvents: (events: SportEvent[]) => void;
   setFilters: (filters: Partial<EventFilters>) => void;
-  toggleFavorite: (eventId: string) => void;
+  toggleFavorite: (eventId: string, dateKey: string) => void;
+  isFavorite: (eventId: string, dateKey: string) => boolean;
+  getFavoritesForDate: (dateKey: string) => string[];
 }
 
 const defaultFilters: EventFilters = {
-  sport: 'all',
-  league: 'all',
+  sport: FILTER_ALL_VALUE,
+  league: FILTER_ALL_VALUE,
   searchQuery: '',
+  selectedDate: undefined,
 };
 
 export const filterEvents = (events: SportEvent[], filters: EventFilters): SportEvent[] => {
   let filtered = [...events];
 
-  if (filters.sport !== 'all') {
+  if (filters.sport !== FILTER_ALL_VALUE) {
     filtered = filtered.filter((event) => event.strSport === filters.sport);
   }
 
-  if (filters.league !== 'all') {
+  if (filters.league !== FILTER_ALL_VALUE) {
     filtered = filtered.filter((event) => event.strLeague === filters.league);
   }
 
@@ -51,9 +55,9 @@ export const filterEvents = (events: SportEvent[], filters: EventFilters): Sport
 
 export const useEventsStore = create<EventState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       events: [],
-      favorites: [],
+      favoritesByDate: {},
       filters: defaultFilters,
 
       setEvents: (events) => {
@@ -66,21 +70,35 @@ export const useEventsStore = create<EventState>()(
         }));
       },
 
-      toggleFavorite: (eventId) => {
+      toggleFavorite: (eventId, dateKey) => {
         set((state) => {
-          const isFavorite = state.favorites.includes(eventId);
+          const favoritesForDate = state.favoritesByDate[dateKey] ?? [];
+          const isFavorite = favoritesForDate.includes(eventId);
+
+          const updatedFavoritesForDate = isFavorite
+            ? favoritesForDate.filter((id) => id !== eventId)
+            : [...favoritesForDate, eventId];
+
           return {
-            favorites: isFavorite
-              ? state.favorites.filter((id) => id !== eventId)
-              : [...state.favorites, eventId],
+            favoritesByDate: {
+              ...state.favoritesByDate,
+              [dateKey]: updatedFavoritesForDate,
+            },
           };
         });
       },
+
+      isFavorite: (eventId, dateKey) => {
+        const favoritesForDate = get().favoritesByDate[dateKey] ?? [];
+        return favoritesForDate.includes(eventId);
+      },
+
+      getFavoritesForDate: (dateKey) => get().favoritesByDate[dateKey] ?? [],
     }),
     {
       name: 'events-store',
       partialize: (state) => ({
-        favorites: state.favorites,
+        favoritesByDate: state.favoritesByDate,
         filters: state.filters,
       }),
     }

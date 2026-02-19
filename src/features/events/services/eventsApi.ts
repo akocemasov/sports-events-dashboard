@@ -1,4 +1,4 @@
-import { API_KEY, BASE_URL } from '@/config/constants';
+import { API_KEY, BASE_URL } from '@/config/appConfig';
 import { parseEventsArray, parseEventSingle } from '@/features/events/utils/parse';
 import { SportEvent } from '@/types/events';
 import { fetchWithTimeout } from '@/utils/api';
@@ -12,12 +12,9 @@ export const eventsQueryKeys = {
  * Fetches upcoming events for a specific date
  * API Endpoint: eventsday.php
  */
-export const fetchEventsPerDay = async (dateStr?: string): Promise<SportEvent[]> => {
+export const fetchEventsPerDay = async (dateStr: string): Promise<SportEvent[]> => {
   try {
-    // Use today's date if not provided
-    const targetDate = dateStr || new Date().toISOString().split('T')[0];
-
-    const url = `${BASE_URL}/${API_KEY}/eventsday.php?d=${targetDate}`;
+    const url = `${BASE_URL}/${API_KEY}/eventsday.php?d=${dateStr}`;
     const response = await fetchWithTimeout(url);
 
     if (!response.ok) {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import { useEffect } from 'react';
 
 import { LoadingState } from '@/components/LoadingState';
@@ -15,9 +16,15 @@ import { EventsStatsOverview } from './EventsStatsOverview';
 
 export const EventsView = () => {
   const { events, filters, setEvents } = useEventsStore();
+
+  // Format date for API call (fallback to today)
+  const dateStr = filters.selectedDate
+    ? format(filters.selectedDate, 'yyyy-MM-dd')
+    : format(new Date(), 'yyyy-MM-dd');
+
   const { data, isLoading } = useQuery({
-    queryKey: eventsQueryKeys.eventsPerDay(),
-    queryFn: () => fetchEventsPerDay(),
+    queryKey: eventsQueryKeys.eventsPerDay(dateStr),
+    queryFn: () => fetchEventsPerDay(dateStr),
   });
 
   useEffect(() => {

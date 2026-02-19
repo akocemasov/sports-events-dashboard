@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode, useState } from 'react';
 
 import AppLayout from '@/components/AppLayout';
-import { QUERY_REFETCH_INTERVAL,QUERY_STALE_TIME } from '@/config/constants';
+import { QUERY_REFETCH_INTERVAL,QUERY_STALE_TIME } from '@/config/appConfig';
 
 type ProvidersProps = {
   children: ReactNode;

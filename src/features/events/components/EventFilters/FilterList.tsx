@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
+import { DatePicker } from '@/components/ui/DatePicker';
 import { Label } from '@/components/ui/Label';
 import {
   Select,
@@ -9,28 +10,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
+import { FILTER_ALL_VALUE } from '@/config/filterConfig';
 
-interface FilterDropdownsProps {
+interface FilterListProps {
   sports: string[];
   leagues: string[];
   selectedSport: string;
   selectedLeague: string;
+  selectedDate?: Date;
   onSportChange: (sport: string) => void;
   onLeagueChange: (league: string) => void;
+  onDateChange: (date: Date | undefined) => void;
   onClearFilters: () => void;
 }
 
-export const FilterDropdowns = ({
+export const FilterList = ({
   sports,
   leagues,
   selectedSport,
   selectedLeague,
+  selectedDate,
   onSportChange,
   onLeagueChange,
+  onDateChange,
   onClearFilters,
-}: FilterDropdownsProps) => {
+}: FilterListProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Date
+        </Label>
+        <DatePicker date={selectedDate} onDateChange={onDateChange} />
+      </div>
+
       <div>
         <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Sport
@@ -42,7 +55,7 @@ export const FilterDropdowns = ({
           <SelectContent>
             {sports.map((sport) => (
               <SelectItem key={sport} value={sport}>
-                {sport === 'all' ? 'All Sports' : sport}
+                {sport === FILTER_ALL_VALUE ? 'All Sports' : sport}
               </SelectItem>
             ))}
           </SelectContent>
@@ -60,7 +73,7 @@ export const FilterDropdowns = ({
           <SelectContent>
             {leagues.map((league) => (
               <SelectItem key={league} value={league}>
-                {league === 'all' ? 'All Leagues' : league}
+                {league === FILTER_ALL_VALUE ? 'All Leagues' : league}
               </SelectItem>
             ))}
           </SelectContent>

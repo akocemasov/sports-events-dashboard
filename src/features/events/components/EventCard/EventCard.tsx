@@ -17,8 +17,9 @@ interface EventCardProps {
 }
 
 export const EventCard = ({ event }: EventCardProps) => {
-  const { favorites, toggleFavorite } = useEventsStore();
-  const isFavorite = favorites.includes(event.idEvent);
+  const { isFavorite: isFavoriteEvent, toggleFavorite } = useEventsStore();
+  const eventDateKey = event.dateEvent;
+  const isFavorite = isFavoriteEvent(event.idEvent, eventDateKey);
 
   const formatDate = (dateStr: string) => {
     try {
@@ -30,7 +31,7 @@ export const EventCard = ({ event }: EventCardProps) => {
 
   const handleFavoriteToggle = (e: React.MouseEvent) => {
     e.preventDefault();
-    toggleFavorite(event.idEvent);
+    toggleFavorite(event.idEvent, eventDateKey);
 
     if (isFavorite) {
       toast.success('Removed from favorites');

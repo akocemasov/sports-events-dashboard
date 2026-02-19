@@ -4,24 +4,26 @@ import { SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
+import { FILTER_ALL_VALUE } from '@/config/filterConfig';
 import { getUniqueLeagues, getUniqueSports } from '@/features/events/utils/parse';
 import { useEventsStore } from '@/store/eventsStore';
 
-import { FilterDropdowns } from './FilterDropdowns';
+import { FilterList } from './FilterList';
 import { SearchBar } from './SearchBar';
 
 export const EventFilters = () => {
   const { events, filters, setFilters } = useEventsStore();
   const [showFilters, setShowFilters] = useState(false);
 
-  const sports = ['all', ...getUniqueSports(events)];
-  const leagues = ['all', ...getUniqueLeagues(events)];
+  const sports = [FILTER_ALL_VALUE, ...getUniqueSports(events)];
+  const leagues = [FILTER_ALL_VALUE, ...getUniqueLeagues(events)];
 
   const handleClearFilters = () => {
     setFilters({
-      sport: 'all',
-      league: 'all',
+      sport: FILTER_ALL_VALUE,
+      league: FILTER_ALL_VALUE,
       searchQuery: '',
+      selectedDate: undefined,
     });
   };
 
@@ -43,13 +45,15 @@ export const EventFilters = () => {
       </Button>
 
       <div className={`${showFilters ? 'block' : 'hidden md:block'}`}>
-        <FilterDropdowns
+        <FilterList
           sports={sports}
           leagues={leagues}
           selectedSport={filters.sport}
           selectedLeague={filters.league}
+          selectedDate={filters.selectedDate}
           onSportChange={(sport) => setFilters({ sport })}
           onLeagueChange={(league) => setFilters({ league })}
+          onDateChange={(date) => setFilters({ selectedDate: date })}
           onClearFilters={handleClearFilters}
         />
       </div>

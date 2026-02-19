@@ -72,6 +72,7 @@ export interface EventFilters {
   sport: string;
   league: string;
   searchQuery: string;
+  selectedDate?: Date;
 }
 
 const nullableStringToEmpty = z.string().nullable().transform((value) => value ?? '');

@@ -1,4 +1,4 @@
-import { API_TIMEOUT } from '@/config/constants';
+import { API_TIMEOUT } from '@/config/appConfig';
 
 /**
  * Fetches a URL with a timeout
