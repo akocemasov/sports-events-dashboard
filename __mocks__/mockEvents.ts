@@ -1,6 +1,11 @@
-import { SportEvent } from '@/store/eventsStore';
+import { SportEvent } from '@/types/events';
 
-export const mockEvents: SportEvent[] = [
+type MockEventBase = Omit<
+  SportEvent,
+  'strLeagueBadge' | 'strHomeTeamBadge' | 'strAwayTeamBadge' | 'strPoster'
+>;
+
+const mockEventsBase: MockEventBase[] = [
   {
     idEvent: '1',
     strEvent: 'Manchester United vs Liverpool',
@@ -194,3 +199,11 @@ export const mockEvents: SportEvent[] = [
     strCountry: 'USA',
   },
 ];
+
+export const mockEvents: SportEvent[] = mockEventsBase.map((event) => ({
+  ...event,
+  strLeagueBadge: null,
+  strHomeTeamBadge: null,
+  strAwayTeamBadge: null,
+  strPoster: null,
+}));
