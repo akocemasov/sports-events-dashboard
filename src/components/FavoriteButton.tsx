@@ -12,13 +12,11 @@ export const FavoriteButton = ({ isFavorite, onToggle, className = '' }: Favorit
   return (
     <button
       onClick={onToggle}
-      className={`p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:scale-110 transition-transform ${className}`}
+      className={`p-2 bg-surface-card rounded-full shadow-md hover:scale-110 transition-transform ${className}`}
       aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
     >
       <Heart
-        className={`w-5 h-5 ${
-          isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400 dark:text-gray-500'
-        }`}
+        className={`w-5 h-5 ${isFavorite ? 'fill-danger-500 text-danger-500' : 'text-text-muted'}`}
       />
     </button>
   );

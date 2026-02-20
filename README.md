@@ -1,6 +1,6 @@
 # Sports Events Dashboard
 
-A demo web dashboard for sports events and results, built with Next.js 16.1, TypeScript 5.9, Tailwind CSS 4.1, and Zustand 5.0. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
+A demo web dashboard for sports events and results, built with Next.js v16, TypeScript v5, Tailwind CSS v4, and Zustand v5. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
 
 ## Features
 
@@ -15,13 +15,13 @@ A demo web dashboard for sports events and results, built with Next.js 16.1, Typ
 
 ## Tech Stack
 
-- **Framework**: Next.js 16.1 (App Router) with React Compiler ⚡
-- **Language**: TypeScript 5.9
-- **Styling**: Tailwind CSS 4.1
-- **State Management**: Zustand 5.0 + TanStack Query
+- **Framework**: Next.js v16 (App Router) with React Compiler ⚡
+- **Language**: TypeScript v5
+- **Styling**: Tailwind CSS v4 with `@theme inline` (CSS-based config)
+- **State Management**: Zustand v5 + TanStack Query v5
 - **API**: TheSportsDB v1 (free tier)
-- **Testing**: Jest 30.2 + React Testing Library 16.3
-- **Code Quality**: ESLint 9.39 + Prettier 3.8
+- **Testing**: Jest v30 + React Testing Library v16
+- **Code Quality**: ESLint v9 + Prettier v3
 
 ## Getting Started
 
@@ -96,16 +96,16 @@ src/
 
 All page components use **async Server Components (RSC)** for:
 
-- ✅ Server-side rendering (better SEO, faster initial load)
+- ✅ Server-side rendering
 - ✅ Reduced JavaScript bundle size
-- ✅ Cleaner routing logic (max ~10 lines per page)
+- ✅ Cleaner routing logic
 
 ### Feature Components (src/features)
 
 Business logic is extracted into **client components** (`'use client'`) organized by feature:
 
-- **EventsView** - Home page: fetches events, manages filters, live score updates
-- **EventDetailView** - Detail page: displays match info, odds, team statistics
+- **EventsView** - Home page: fetches events, manages filters
+- **EventDetailView** - Detail page: displays detailed match info
 - **FavoritesView** - Favorites page: filters events from favorites array
 - **LoginForm** - Login form: validation and authentication
 - **RegisterForm** - Register form: multi-field validation
@@ -136,13 +136,10 @@ Business logic is extracted into **client components** (`'use client'`) organize
 - Filter by sport (Soccer, Basketball, Baseball, etc.)
 - Filter by league
 - Search by team or event name
-- Sort by time, popularity, or odds
 
 ### Event Details
 
 - Click on any event to view detailed information
-- See team statistics and head-to-head comparison
-- View betting odds (mock data for demonstration)
 - Add/remove events from favorites
 
 ### Authentication (Demo)
@@ -165,9 +162,10 @@ Business logic is extracted into **client components** (`'use client'`) organize
 
 ## API Integration
 
-This project uses [TheSportsDB](https://www.thesportsdb.com/) free API for sports data with mock data fallback.
+This project uses [TheSportsDB](https://www.thesportsdb.com/) free API for sports data.
 
 **Data Fetching Strategy** (TanStack Query):
+
 - **Stale Time**: 5 minutes - cached data reused during navigation
 - **Refetch Interval**: 30 seconds - automatic background updates for live scores
 - **UTC Timezone**: All times displayed in UTC as provided by the API

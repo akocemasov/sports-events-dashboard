@@ -57,14 +57,14 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4">
+    <div className="flex items-center justify-center px-4 py-6">
       <div className="max-w-md w-full">
         <AuthHeader
           title="Create an account"
           subtitle={`Join ${APP_NAME} to track your favorite events`}
         />
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+        <div className="bg-surface-card rounded-xl border border-border-subtle p-6 sm:p-8">
           <DemoNotice />
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -113,19 +113,16 @@ export const RegisterForm = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors"
+              className="w-full py-2.5 bg-brand-600 hover:bg-brand-700 disabled:bg-brand-400 text-white font-medium rounded-lg transition-colors"
             >
               {isLoading ? 'Creating account...' : 'Create account'}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-text-secondary">
               Already have an account?{' '}
-              <Link
-                href="/login"
-                className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
-              >
+              <Link href="/login" className="text-link hover:underline font-medium">
                 Sign in
               </Link>
             </p>

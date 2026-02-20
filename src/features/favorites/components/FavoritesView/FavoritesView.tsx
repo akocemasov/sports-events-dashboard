@@ -37,7 +37,7 @@ export const FavoritesView = () => {
             <EmptyFavoritesState />
           ) : (
             <>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-text-secondary">
                 {favoriteEvents.length} favorite event
                 {favoriteEvents.length !== 1 ? 's' : ''}
               </p>

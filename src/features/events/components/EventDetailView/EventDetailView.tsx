@@ -33,7 +33,7 @@ export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
   if (!event) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Event not found</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-2">Event not found</h2>
         <BackToEventsLink />
       </div>
     );
@@ -52,7 +52,7 @@ export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
     <div className="max-w-5xl mx-auto space-y-6">
       <BackToEventsLink />
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-surface-card rounded-xl border border-border-subtle overflow-hidden">
         <EventDetailHeader
           sport={event.strSport}
           league={event.strLeague}
@@ -62,7 +62,7 @@ export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
           onFavoriteToggle={handleFavoriteToggle}
         />
 
-        <div className="p-6">
+        <div className="p-6 bg-surface-content">
           <EventDetailMatchInfo
             eventThumb={event.strThumb}
             homeTeam={event.strHomeTeam}

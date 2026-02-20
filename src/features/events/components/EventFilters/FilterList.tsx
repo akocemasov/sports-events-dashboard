@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/Select';
-import { FILTER_ALL_VALUE } from '@/config/filterConfig';
+import { FILTER_ALL_VALUE } from '@/config/constants';
 
 interface FilterListProps {
   sports: string[];
@@ -38,18 +38,19 @@ export const FilterList = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
       <div>
-        <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Date
-        </Label>
+        <Label className="block text-sm font-medium text-text-secondary mb-2">Date</Label>
         <DatePicker date={selectedDate} onDateChange={onDateChange} />
       </div>
 
       <div>
-        <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <Label id="sport-label" className="block text-sm font-medium text-text-secondary mb-2">
           Sport
         </Label>
         <Select value={selectedSport} onValueChange={onSportChange}>
-          <SelectTrigger className="w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <SelectTrigger
+            aria-labelledby="sport-label"
+            className="w-full bg-surface-content text-text-primary hover:bg-border-strong hover:bg-accent transition-colors"
+          >
             <SelectValue placeholder="All Sports" />
           </SelectTrigger>
           <SelectContent>
@@ -63,11 +64,14 @@ export const FilterList = ({
       </div>
 
       <div>
-        <Label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <Label id="league-label" className="block text-sm font-medium text-text-secondary mb-2">
           League
         </Label>
         <Select value={selectedLeague} onValueChange={onLeagueChange}>
-          <SelectTrigger className="w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <SelectTrigger
+            aria-labelledby="league-label"
+            className="w-full bg-surface-content text-text-primary hover:bg-border-strong hover:bg-accent transition-colors"
+          >
             <SelectValue placeholder="All Leagues" />
           </SelectTrigger>
           <SelectContent>
@@ -84,7 +88,7 @@ export const FilterList = ({
         <Button
           onClick={onClearFilters}
           variant="ghost"
-          className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          className="w-full px-4 py-2 bg-surface-content text-text-secondary rounded-lg hover:bg-border-strong hover:bg-accent transition-colors"
         >
           Clear Filters
         </Button>

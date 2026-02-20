@@ -31,13 +31,7 @@ export const EventDetailMatchInfo = ({
     <div className="space-y-6">
       {eventThumb && (
         <div className="relative w-full h-64 rounded-lg overflow-hidden bg-transparent">
-          <Image
-            src={eventThumb}
-            alt="Event badge"
-            fill
-            className="object-contain"
-            sizes="100vw"
-          />
+          <Image src={eventThumb} alt="Event badge" fill className="object-contain" sizes="100vw" />
         </div>
       )}
 
@@ -59,20 +53,20 @@ export const EventDetailMatchInfo = ({
               {homeTeam.substring(0, 2).toUpperCase()}
             </div>
           )}
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{homeTeam}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">Home</p>
+          <h2 className="text-xl font-bold text-text-primary">{homeTeam}</h2>
+          <p className="text-sm text-text-secondary">Home</p>
         </div>
 
         {/* Score */}
         <div className="text-center">
           {isFinished || homeScore !== null ? (
-            <div className="text-5xl font-bold text-gray-900 dark:text-white">
+            <div className="text-5xl font-bold text-text-primary">
               {homeScore || '0'} - {awayScore || '0'}
             </div>
           ) : (
-            <div className="text-3xl font-semibold text-gray-500 dark:text-gray-400">VS</div>
+            <div className="text-3xl font-semibold text-text-muted">VS</div>
           )}
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{formatEventStatus(status)}</p>
+          <p className="text-sm text-text-secondary mt-2">{formatEventStatus(status)}</p>
         </div>
 
         {/* Away team */}
@@ -92,8 +86,8 @@ export const EventDetailMatchInfo = ({
               {awayTeam.substring(0, 2).toUpperCase()}
             </div>
           )}
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{awayTeam}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">Away</p>
+          <h2 className="text-xl font-bold text-text-primary">{awayTeam}</h2>
+          <p className="text-sm text-text-secondary">Away</p>
         </div>
       </div>
     </div>

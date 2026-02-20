@@ -12,9 +12,5 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerPr
     lg: 'w-12 h-12',
   };
 
-  return (
-    <Loader2
-      className={`${sizeClasses[size]} text-blue-600 dark:text-blue-400 animate-spin ${className}`}
-    />
-  );
+  return <Loader2 className={`${sizeClasses[size]} text-brand-500 animate-spin ${className}`} />;
 }

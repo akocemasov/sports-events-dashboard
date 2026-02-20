@@ -5,7 +5,7 @@ export const BackToEventsLink = () => {
   return (
     <Link
       href="/"
-      className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+      className="inline-flex items-center gap-2 text-text-secondary hover:text-link transition-colors"
     >
       <ArrowLeft className="w-4 h-4" />
       Back to events

@@ -2,6 +2,7 @@ import '@/styles/index.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import type { ReactNode } from 'react';
 
 import { Providers } from '@/app/providers';
 import { Toaster } from '@/components/ui/Sonner';
@@ -16,11 +17,11 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning className="h-screen">
+      <body className={`${inter.className} h-screen`}>
         <Providers>
           {children}
           <Toaster position="bottom-right" />

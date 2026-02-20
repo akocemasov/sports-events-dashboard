@@ -4,7 +4,7 @@ import { SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
-import { FILTER_ALL_VALUE } from '@/config/filterConfig';
+import { FILTER_ALL_VALUE } from '@/config/constants';
 import { getUniqueLeagues, getUniqueSports } from '@/features/events/utils/parse';
 import { useEventsStore } from '@/store/eventsStore';
 
@@ -38,7 +38,7 @@ export const EventFilters = () => {
       <Button
         onClick={() => setShowFilters(!showFilters)}
         variant="ghost"
-        className="md:hidden w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        className="md:hidden w-full flex items-center justify-center gap-2 px-4 py-2 bg-surface-content text-text-secondary rounded-lg hover:bg-border-strong hover:bg-accent transition-colors"
       >
         <SlidersHorizontal className="w-4 h-4" />
         {showFilters ? 'Hide Filters' : 'Show Filters'}

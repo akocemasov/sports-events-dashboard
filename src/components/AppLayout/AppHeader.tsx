@@ -33,31 +33,27 @@ export function AppHeader({
   const isActive = (path: string) => pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+    <header className="sticky top-0 z-50 border-b border-border-subtle bg-surface-page">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/favicon.ico" alt={APP_NAME} width={40} height={40} />
-            <span className="text-xl font-bold text-gray-900 dark:text-white">{APP_NAME}</span>
+            <span className="text-xl font-bold text-text-primary">{APP_NAME}</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
             <Link
               href="/"
-              className={`text-sm font-medium transition-colors ${
-                isActive('/')
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+              className={`text-base font-medium transition-colors ${
+                isActive('/') ? 'text-link' : 'text-text-secondary hover:text-link'
               }`}
             >
               Events
             </Link>
             <Link
               href="/favorites"
-              className={`flex items-center gap-1 text-sm font-medium transition-colors ${
-                isActive('/favorites')
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+              className={`flex items-center gap-1 text-base font-medium transition-colors ${
+                isActive('/favorites') ? 'text-link' : 'text-text-secondary hover:text-link'
               }`}
             >
               <Heart className="w-4 h-4" />
@@ -65,7 +61,7 @@ export function AppHeader({
                 Favorites
                 <Badge
                   variant="outline"
-                  className="absolute -top-1.5 -right-5 h-4 min-w-4 border-red-500 bg-red-500 px-1 text-[10px] leading-none text-white"
+                  className="absolute -top-1.5 -right-5 h-4 min-w-4 border-danger-500 bg-danger-500 px-1 text-[10px] leading-none text-white"
                 >
                   {favoritesCount}
                 </Badge>
@@ -76,25 +72,25 @@ export function AppHeader({
           <div className="flex items-center gap-3">
             <button
               onClick={onToggleTheme}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-lg hover:bg-surface-interactive transition-colors"
               aria-label="Toggle theme"
             >
               {effectiveTheme === 'dark' ? (
-                <Sun className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <Sun className="w-5 h-5 text-text-secondary" />
               ) : (
-                <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <Moon className="w-5 h-5 text-text-secondary" />
               )}
             </button>
 
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                  <User className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                  <span className="text-sm text-gray-900 dark:text-white">{userName}</span>
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-surface-interactive rounded-lg">
+                  <User className="w-4 h-4 text-text-muted" />
+                  <span className="text-sm text-text-primary">{userName}</span>
                 </div>
                 <button
                   onClick={onLogout}
-                  className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-danger-500 hover:bg-danger-400/10 rounded-lg transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   <span className="hidden sm:inline">Logout</span>
@@ -103,7 +99,7 @@ export function AppHeader({
             ) : (
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                className="px-4 py-2 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition-colors"
               >
                 Login
               </Link>
@@ -111,30 +107,30 @@ export function AppHeader({
           </div>
         </div>
 
-        <nav className="md:hidden flex items-center gap-4 pb-3 border-t border-gray-200 dark:border-gray-800 pt-3 mt-2">
+        <nav className="md:hidden flex items-center gap-4 pb-3 border-t border-border-subtle pt-3 mt-2">
           <Link
             href="/"
-            className={`flex-1 text-center text-sm font-medium py-2 rounded-lg transition-colors ${
+            className={`flex-1 text-center text-base font-medium py-2 rounded-lg transition-colors ${
               isActive('/')
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                ? 'bg-brand-600 text-white'
+                : 'text-text-secondary hover:bg-surface-interactive'
             }`}
           >
             Events
           </Link>
           <Link
             href="/favorites"
-            className={`flex-1 text-center text-sm font-medium py-2 rounded-lg transition-colors ${
+            className={`flex-1 text-center text-base font-medium py-2 rounded-lg transition-colors ${
               isActive('/favorites')
-                ? 'bg-blue-600 text-white'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                ? 'bg-brand-600 text-white'
+                : 'text-text-secondary hover:bg-surface-interactive'
             }`}
           >
             <span className="relative inline-flex">
               Favorites
               <Badge
                 variant="outline"
-                className="absolute -top-1.5 -right-5 h-4 min-w-4 border-red-500 bg-red-500 px-1 text-[10px] leading-none text-white"
+                className="absolute -top-1.5 -right-5 h-4 min-w-4 border-danger-500 bg-danger-500 px-1 text-[10px] leading-none text-white"
               >
                 {favoritesCount}
               </Badge>

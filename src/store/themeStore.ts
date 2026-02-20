@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 
-type Theme = 'light' | 'dark' | 'system';
+import { THEME } from '@/config/constants';
+
+type Theme = (typeof THEME)[keyof typeof THEME];
 
 interface ThemeState {
   theme: Theme;
@@ -10,8 +12,8 @@ interface ThemeState {
 }
 
 export const useThemeStore = create<ThemeState>((set, get) => ({
-  theme: 'system',
-  effectiveTheme: 'light',
+  theme: THEME.SYSTEM,
+  effectiveTheme: THEME.LIGHT,
 
   setTheme: (theme) => {
     localStorage.setItem('app_theme', theme);
@@ -21,31 +23,29 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
 
   initTheme: () => {
     const { theme } = get();
-    let effectiveTheme: 'light' | 'dark' = 'light';
+    let effectiveTheme: 'light' | 'dark' = THEME.LIGHT;
 
-    if (theme === 'system') {
-      effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (theme === THEME.SYSTEM) {
+      effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? THEME.DARK
+        : THEME.LIGHT;
     } else {
       effectiveTheme = theme;
     }
 
     set({ effectiveTheme });
 
-    // Apply to document with smooth transition
     const root = document.documentElement;
+    root.style.setProperty('transition', 'background-color 0.3s ease, color 0.3s ease'); // temporarily add transitions for smooth theme switching
 
-    // Add transition class temporarily
-    root.style.setProperty('transition', 'background-color 0.3s ease, color 0.3s ease');
-
-    if (effectiveTheme === 'dark') {
+    if (effectiveTheme === THEME.DARK) {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
 
-    // Remove transition after animation completes
     setTimeout(() => {
-      root.style.removeProperty('transition');
+      root.style.removeProperty('transition'); // remove the transition after 300ms to avoid affecting other animations
     }, 300);
   },
 }));

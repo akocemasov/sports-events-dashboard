@@ -14,7 +14,7 @@ export const eventsQueryKeys = {
  */
 export const fetchEventsPerDay = async (dateStr: string): Promise<SportEvent[]> => {
   try {
-    const url = `${BASE_URL}/${API_KEY}/eventsday.php?d=${dateStr}`;
+    const url = `${BASE_URL}/${API_KEY}/eventsday.php?d=${encodeURIComponent(dateStr)}`;
     const response = await fetchWithTimeout(url);
 
     if (!response.ok) {
@@ -43,7 +43,7 @@ export const fetchEventsPerDay = async (dateStr: string): Promise<SportEvent[]> 
  */
 export const fetchEventDetails = async (eventId: string): Promise<SportEvent | null> => {
   try {
-    const url = `${BASE_URL}/${API_KEY}/lookupevent.php?id=${eventId}`;
+    const url = `${BASE_URL}/${API_KEY}/lookupevent.php?id=${encodeURIComponent(eventId)}`;
     const response = await fetchWithTimeout(url);
 
     if (!response.ok) {

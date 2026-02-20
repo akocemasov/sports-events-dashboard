@@ -56,9 +56,7 @@ export const EventsView = () => {
       <EventFilters />
 
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Showing {filteredEvents.length} events
-        </p>
+        <p className="text-sm text-text-secondary">Showing {filteredEvents.length} events</p>
       </div>
 
       <EventsGrid events={filteredEvents} />

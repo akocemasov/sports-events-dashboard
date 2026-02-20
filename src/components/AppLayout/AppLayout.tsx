@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { toast } from 'sonner';
 
+import { THEME } from '@/config/constants';
 import { useAuthStore } from '@/store/authStore';
 import { useThemeStore } from '@/store/themeStore';
 
@@ -23,7 +24,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }, [initTheme, checkAuth]);
 
   const handleToggleTheme = () => {
-    setTheme(effectiveTheme === 'dark' ? 'light' : 'dark');
+    setTheme(effectiveTheme === THEME.DARK ? THEME.LIGHT : THEME.DARK);
   };
 
   const handleLogout = () => {
@@ -33,7 +34,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+    <div className="h-screen flex flex-col bg-surface-page transition-colors">
       <AppHeader
         pathname={pathname}
         effectiveTheme={effectiveTheme}

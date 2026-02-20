@@ -46,7 +46,7 @@ export const EventCard = ({ event }: EventCardProps) => {
   return (
     <Link
       href={`/event/${event.idEvent}`}
-      className="flex flex-col bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all"
+      className="flex flex-col bg-surface-card rounded-xl border border-border-subtle overflow-hidden hover:shadow-lg hover:border-border-strong hover:bg-surface-header transition-all"
     >
       <EventCardHeader
         sport={event.strSport}

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { FILTER_ALL_VALUE } from '@/config/filterConfig';
+import { FILTER_ALL_VALUE } from '@/config/constants';
 import { EventFilters, SportEvent } from '@/types/events';
 
 interface EventState {

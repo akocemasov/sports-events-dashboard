@@ -8,20 +8,20 @@ export const EVENT_STATUS = {
   // Not Started
   NOT_STARTED: 'NS',
   TIME_TO_BE_DEFINED: 'TBD',
-  
+
   // Finished states
   FINISHED: 'FT',
   AFTER_OVERTIME: 'AOT',
   AFTER_EXTRA_TIME: 'AET',
   AFTER_PENALTIES: 'AP',
   PENALTY_FINISHED: 'PEN',
-  
+
   // American Football / Basketball Quarters
   Q1: 'Q1',
   Q2: 'Q2',
   Q3: 'Q3',
   Q4: 'Q4',
-  
+
   // Baseball Innings
   IN1: 'IN1',
   IN2: 'IN2',
@@ -32,19 +32,19 @@ export const EVENT_STATUS = {
   IN7: 'IN7',
   IN8: 'IN8',
   IN9: 'IN9',
-  
+
   // Ice Hockey Periods
   P1: 'P1',
   P2: 'P2',
   P3: 'P3',
-  
+
   // Volleyball Sets
   S1: 'S1',
   S2: 'S2',
   S3: 'S3',
   S4: 'S4',
   S5: 'S5',
-  
+
   // Common in-play states
   FIRST_HALF: '1H',
   SECOND_HALF: '2H',
@@ -54,7 +54,7 @@ export const EVENT_STATUS = {
   EXTRA_TIME: 'ET',
   PENALTY_IN_PROGRESS: 'P',
   PENALTY_TIME: 'PT',
-  
+
   // Postponed/Cancelled/Other
   POSTPONED_SHORT: 'PST',
   POSTPONED: 'POST',
@@ -75,12 +75,17 @@ export interface EventFilters {
   selectedDate?: Date;
 }
 
-const nullableStringToEmpty = z.string().nullable().transform((value) => value ?? '');
-const nullableStringToNull = z.string().nullable().optional().transform((value) => value ?? null);
-const scoreSchema = z
-  .union([z.string(), z.number()])
+const nullableStringToEmpty = z
+  .string()
   .nullable()
-  .transform((value) => (value === null || value === '' ? null : String(value)));
+  .optional()
+  .transform((value) => value ?? '');
+
+const nullableStringToNull = z
+  .string()
+  .nullable()
+  .optional()
+  .transform((value) => value ?? null);
 
 export const sportEventSchema = z.object({
   idEvent: nullableStringToEmpty,
@@ -94,12 +99,12 @@ export const sportEventSchema = z.object({
   strAwayTeam: nullableStringToEmpty,
   strHomeTeamBadge: nullableStringToNull,
   strAwayTeamBadge: nullableStringToNull,
-  intHomeScore: scoreSchema,
-  intAwayScore: scoreSchema,
+  intHomeScore: nullableStringToNull,
+  intAwayScore: nullableStringToNull,
   strThumb: nullableStringToNull,
-  strStatus: z.string().nullable().transform((value) => value ?? EVENT_STATUS.NOT_STARTED),
-  strVenue: z.string().nullable().transform((value) => value ?? null),
-  strCountry: z.string().nullable().transform((value) => value ?? null),
+  strStatus: nullableStringToEmpty,
+  strVenue: nullableStringToNull,
+  strCountry: nullableStringToNull,
   strPoster: nullableStringToNull,
 });
 

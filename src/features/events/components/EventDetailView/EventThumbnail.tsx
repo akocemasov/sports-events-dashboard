@@ -11,13 +11,7 @@ export const EventThumbnail = ({ eventThumb }: EventThumbnailProps) => {
 
   return (
     <div className="relative w-full h-64 rounded-lg overflow-hidden bg-transparent">
-      <Image
-        src={eventThumb}
-        alt="Event badge"
-        fill
-        className="object-contain"
-        sizes="100vw"
-      />
+      <Image src={eventThumb} alt="Event badge" fill className="object-contain" sizes="100vw" />
     </div>
   );
 };

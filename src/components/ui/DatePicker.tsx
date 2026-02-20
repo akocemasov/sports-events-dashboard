@@ -20,7 +20,7 @@ export const DatePicker = ({ date, onDateChange }: DatePickerProps) => {
         <Button
           variant="outline"
           className={cn(
-            'w-full justify-start text-left font-normal bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700',
+            'w-full justify-start text-left font-normal bg-surface-content hover:bg-border-strong hover:bg-accent transition-colors',
             !date && 'text-muted-foreground'
           )}
         >
@@ -28,7 +28,7 @@ export const DatePicker = ({ date, onDateChange }: DatePickerProps) => {
           {date ? format(date, 'PPP') : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 dark:bg-zinc-950 dark:border-zinc-800" align="start">
+      <PopoverContent className="w-auto p-0 bg-surface-card border-border-subtle" align="start">
         <Calendar mode="single" selected={date} onSelect={onDateChange} />
       </PopoverContent>
     </Popover>

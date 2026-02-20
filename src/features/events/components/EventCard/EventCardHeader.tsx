@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 
 import { FavoriteButton } from '@/components/FavoriteButton';
@@ -14,9 +12,16 @@ interface EventCardHeaderProps {
   onFavoriteToggle: (e: React.MouseEvent) => void;
 }
 
-export const EventCardHeader = ({ sport, league, leagueBadge, isLive, isFavorite, onFavoriteToggle }: EventCardHeaderProps) => {
+export const EventCardHeader = ({
+  sport,
+  league,
+  leagueBadge,
+  isLive,
+  isFavorite,
+  onFavoriteToggle,
+}: EventCardHeaderProps) => {
   return (
-    <div className="p-4 pb-3 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
+    <div className="p-4 pb-3 bg-surface-header border-b border-border-subtle">
       <div className="flex items-center justify-between gap-3">
         <div className="shrink-0">
           <LiveIndicator isLive={isLive} />
@@ -24,12 +29,12 @@ export const EventCardHeader = ({ sport, league, leagueBadge, isLive, isFavorite
 
         <div className="flex-1 flex flex-col gap-1 min-w-0">
           <div className="flex items-center gap-1.5 text-xs">
-            <span className="text-gray-600 dark:text-gray-400 shrink-0">Sport:</span>
-            <span className="font-medium text-blue-600 dark:text-blue-400 truncate">{sport}</span>
+            <span className="text-text-secondary shrink-0">Sport:</span>
+            <span className="font-medium text-success-500 truncate">{sport}</span>
           </div>
 
           <div className="flex items-center gap-1.5 text-xs">
-            <span className="text-gray-600 dark:text-gray-400 shrink-0">League:</span>
+            <span className="text-text-secondary shrink-0">League:</span>
             <div className="flex items-center gap-1.5 min-w-0">
               {leagueBadge && (
                 <div className="relative w-4 h-4 shrink-0">
@@ -42,7 +47,7 @@ export const EventCardHeader = ({ sport, league, leagueBadge, isLive, isFavorite
                   />
                 </div>
               )}
-              <span className="text-gray-900 dark:text-white truncate">{league}</span>
+              <span className="text-text-primary truncate">{league}</span>
             </div>
           </div>
         </div>
