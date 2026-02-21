@@ -5,7 +5,7 @@ import { format, parseISO } from 'date-fns';
 
 import { LoadingState } from '@/components/LoadingState';
 import { eventsQueryKeys, fetchEventDetails } from '@/features/events/services/eventsApi';
-import { isEventFinished, isEventLive } from '@/features/events/utils/parse';
+import { isEventFinished, isEventLive, isFavoriteEvent } from '@/features/events/utils/parse';
 import { useEventsStore } from '@/store/eventsStore';
 import { SportEvent } from '@/types/events';
 
@@ -19,7 +19,7 @@ interface EventDetailViewProps {
 }
 
 export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
-  const { isFavorite: isFavoriteEvent, toggleFavorite } = useEventsStore();
+  const { favoritesByDate, toggleFavorite } = useEventsStore();
   const { data: event, isLoading } = useQuery<SportEvent | null>({
     queryKey: eventsQueryKeys.eventDetails(eventId),
     queryFn: () => fetchEventDetails(eventId),
@@ -40,7 +40,7 @@ export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
   }
 
   const eventDateKey = event.dateEvent;
-  const isFavorite = isFavoriteEvent(event.idEvent, eventDateKey);
+  const isFavorite = isFavoriteEvent(event.idEvent, eventDateKey, favoritesByDate);
   const isLive = isEventLive(event.strStatus);
   const isFinished = isEventFinished(event.strStatus);
 

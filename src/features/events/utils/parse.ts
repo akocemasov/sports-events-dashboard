@@ -1,5 +1,6 @@
+import { EVENT_STATUS } from '@/config/constants';
 import { SportEvent } from '@/types/events';
-import { EVENT_STATUS, sportEventArraySchema, sportEventSchema } from '@/types/events';
+import { sportEventArraySchema, sportEventSchema } from '@/types/events';
 
 /**
  * Utility to check if event is finished (game has ended with final result)
@@ -62,6 +63,18 @@ export const isEventLive = (status: string | null): boolean => {
     EVENT_STATUS.PENALTY_TIME,
   ];
   return liveStatuses.includes(status);
+};
+
+/**
+ * Utility to check if an event is marked as favorite
+ */
+export const isFavoriteEvent = (
+  eventId: string,
+  dateKey: string,
+  favoritesByDate: Record<string, string[]>
+): boolean => {
+  const favoritesForDate = favoritesByDate[dateKey] ?? [];
+  return favoritesForDate.includes(eventId);
 };
 
 /**

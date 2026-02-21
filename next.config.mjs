@@ -1,20 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  reactCompiler: true,
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'www.thesportsdb.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'r2.thesportsdb.com',
+      },
     ],
-    unoptimized: true, // For static export if needed
   },
-  // Enable React Compiler (experimental) - Requires babel-plugin-react-compiler
-  // Uncomment and install the plugin to enable:
-  // experimental: {
-  //   reactCompiler: true,
-  // },
 };
 
 export default nextConfig;

@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-import { isEventFinished, isEventLive } from '@/features/events/utils/parse';
+import { isEventFinished, isEventLive, isFavoriteEvent } from '@/features/events/utils/parse';
 import { useEventsStore } from '@/store/eventsStore';
 import { SportEvent } from '@/types/events';
 
@@ -17,9 +17,9 @@ interface EventCardProps {
 }
 
 export const EventCard = ({ event }: EventCardProps) => {
-  const { isFavorite: isFavoriteEvent, toggleFavorite } = useEventsStore();
+  const { favoritesByDate, toggleFavorite } = useEventsStore();
   const eventDateKey = event.dateEvent;
-  const isFavorite = isFavoriteEvent(event.idEvent, eventDateKey);
+  const isFavorite = isFavoriteEvent(event.idEvent, eventDateKey, favoritesByDate);
 
   const formatDate = (dateStr: string) => {
     try {

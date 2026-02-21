@@ -12,7 +12,6 @@ interface EventState {
   setEvents: (events: SportEvent[]) => void;
   setFilters: (filters: Partial<EventFilters>) => void;
   toggleFavorite: (eventId: string, dateKey: string) => void;
-  isFavorite: (eventId: string, dateKey: string) => boolean;
   getFavoritesForDate: (dateKey: string) => string[];
 }
 
@@ -86,11 +85,6 @@ export const useEventsStore = create<EventState>()(
             },
           };
         });
-      },
-
-      isFavorite: (eventId, dateKey) => {
-        const favoritesForDate = get().favoritesByDate[dateKey] ?? [];
-        return favoritesForDate.includes(eventId);
       },
 
       getFavoritesForDate: (dateKey) => get().favoritesByDate[dateKey] ?? [],

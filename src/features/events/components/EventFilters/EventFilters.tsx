@@ -38,7 +38,7 @@ export const EventFilters = () => {
       <Button
         onClick={() => setShowFilters(!showFilters)}
         variant="ghost"
-        className="md:hidden w-full flex items-center justify-center gap-2 px-4 py-2 bg-surface-content text-text-secondary rounded-lg hover:bg-border-strong hover:bg-accent transition-colors"
+        className="md:hidden w-full flex items-center justify-center gap-2 px-4 py-2 bg-surface-content text-text-secondary rounded-lg hover:bg-border-strong transition-colors"
       >
         <SlidersHorizontal className="w-4 h-4" />
         {showFilters ? 'Hide Filters' : 'Show Filters'}
