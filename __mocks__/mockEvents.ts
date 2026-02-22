@@ -20,6 +20,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'Old Trafford',
     strCountry: 'England',
+    strCity: null,
   },
   {
     idEvent: '2',
@@ -40,6 +41,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'Crypto.com Arena',
     strCountry: 'USA',
+    strCity: null,
   },
   {
     idEvent: '3',
@@ -60,6 +62,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'Santiago Bernabéu',
     strCountry: 'Spain',
+    strCity: null,
   },
   {
     idEvent: '4',
@@ -80,6 +83,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'Yankee Stadium',
     strCountry: 'USA',
+    strCity: null,
   },
   {
     idEvent: '5',
@@ -100,6 +104,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'Allianz Arena',
     strCountry: 'Germany',
+    strCity: null,
   },
   {
     idEvent: '6',
@@ -120,6 +125,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'FT',
     strVenue: 'Chase Center',
     strCountry: 'USA',
+    strCity: null,
   },
   {
     idEvent: '7',
@@ -140,6 +146,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'Stamford Bridge',
     strCountry: 'England',
+    strCity: null,
   },
   {
     idEvent: '8',
@@ -160,6 +167,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'FTX Arena',
     strCountry: 'USA',
+    strCity: null,
   },
   {
     idEvent: '9',
@@ -180,6 +188,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'AT&T Stadium',
     strCountry: 'USA',
+    strCity: null,
   },
   {
     idEvent: '10',
@@ -200,6 +209,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'FT',
     strVenue: 'Scotiabank Arena',
     strCountry: 'Canada',
+    strCity: null,
   },
   {
     idEvent: '11',
@@ -220,6 +230,7 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'Parc des Princes',
     strCountry: 'France',
+    strCity: null,
   },
   {
     idEvent: '12',
@@ -240,5 +251,6 @@ export const mockEvents: SportEvent[] = [
     strStatus: 'NS',
     strVenue: 'United Center',
     strCountry: 'USA',
+    strCity: null,
   },
 ];

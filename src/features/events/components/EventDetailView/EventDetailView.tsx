@@ -80,6 +80,7 @@ export const EventDetailView = ({ eventId }: EventDetailViewProps) => {
           date={format(parseISO(event.dateEvent), 'MMMM dd, yyyy')}
           time={event.strTime?.substring(0, 5) || 'TBD'}
           venue={event.strVenue}
+          city={event.strCity}
           country={event.strCountry}
         />
       </div>

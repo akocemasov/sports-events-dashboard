@@ -1,9 +1,12 @@
+import { formatEventStatus } from '@/features/events/utils/parse';
+
 interface EventCardMatchInfoProps {
   homeTeam: string;
   awayTeam: string;
   homeScore: string | null;
   awayScore: string | null;
   isFinished: boolean;
+  status: string | null;
 }
 
 export const EventCardMatchInfo = ({
@@ -12,6 +15,7 @@ export const EventCardMatchInfo = ({
   homeScore,
   awayScore,
   isFinished,
+  status,
 }: EventCardMatchInfoProps) => {
   return (
     <div className="w-full p-4 bg-surface-content">
@@ -24,11 +28,17 @@ export const EventCardMatchInfo = ({
         {/* Score or VS */}
         <div className="shrink-0 text-center min-w-15">
           {isFinished || homeScore !== null ? (
-            <div className="text-lg font-bold text-text-primary">
-              {homeScore || '0'} - {awayScore || '0'}
+            <div>
+              <div className="text-lg font-bold text-text-primary">
+                {homeScore || '0'} - {awayScore || '0'}
+              </div>
+              <div className="text-xs text-text-muted">{formatEventStatus(status)}</div>
             </div>
           ) : (
-            <div className="text-sm font-semibold text-text-muted">VS</div>
+            <div>
+              <div className="text-sm font-semibold text-text-muted">VS</div>
+              <div className="text-xs text-text-muted">{formatEventStatus(status)}</div>
+            </div>
           )}
         </div>
 

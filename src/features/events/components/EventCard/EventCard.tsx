@@ -64,6 +64,7 @@ export const EventCard = ({ event }: EventCardProps) => {
           homeScore={event.intHomeScore}
           awayScore={event.intAwayScore}
           isFinished={isFinished}
+          status={event.strStatus}
         />
       </div>
 

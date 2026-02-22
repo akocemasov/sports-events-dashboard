@@ -36,6 +36,7 @@ export const sportEventSchema = z.object({
   strThumb: nullableStringToNull,
   strStatus: nullableStringToEmpty,
   strVenue: nullableStringToNull,
+  strCity: nullableStringToNull,
   strCountry: nullableStringToNull,
   strPoster: nullableStringToNull,
 });
