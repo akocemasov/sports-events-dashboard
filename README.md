@@ -27,7 +27,7 @@ A demo web dashboard for sports events and results, built with Next.js v16, Type
 
 ### Prerequisites
 
-- Node.js 18+ or higher
+- Node.js v18+
 - npm, yarn, or pnpm
 
 ### Installation
@@ -61,7 +61,9 @@ A demo web dashboard for sports events and results, built with Next.js v16, Type
 - `yarn lint` - Run ESLint and Prettier checks
 - `yarn lint:fix` - Fix ESLint and Prettier issues
 - `yarn typecheck` - Run TypeScript type checking
-- `yarn test` - Run tests in watch mode
+- `yarn test` - Run all tests once
+- `yarn test:watch` - Run tests in watch mode
+- `yarn test:coverage` - Run tests with coverage report
 - `yarn test:ci` - Run tests in CI mode
 
 ## Project Structure
@@ -180,7 +182,20 @@ Run tests with:
 yarn test
 ```
 
-Tests are written using Jest and React Testing Library and colocated next to the components or pages they cover using `*.test.tsx`.
+Tests are written using Jest and React Testing Library and colocated next to the files they cover using `*.test.tsx`.
+
+Current test focus:
+
+- Zustand stores (`src/store`)
+- Event parsing and API utility logic (`src/features/events/utils`, `src/utils`)
+- Event service layer (`src/features/events/services`)
+- Core auth and filter UI flows (`src/features/auth`, `src/features/events/components/EventFilters`, `src/components`)
+- App Router page smoke tests (`src/app`)
+
+Mocking strategy:
+
+- Unit tests primarily use manual Jest mocks for module boundaries.
+- Component tests use React Testing Library + `@testing-library/user-event` for user-driven behavior.
 
 ## Code Quality
 
@@ -224,7 +239,7 @@ Create a `.env.local` file:
 
 ```
 
-# No environment variables required for basic functionality
+No environment variables required for basic functionality
 
 ```
 

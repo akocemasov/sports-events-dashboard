@@ -22,10 +22,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email: string, _password: string) => {
     // Mock authentication - in real app, this would call an API
     try {
-      // Simulate API delay
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Mock user data
       const user = {
         id: Date.now().toString(),
         email,
