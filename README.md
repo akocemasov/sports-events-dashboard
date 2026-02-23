@@ -1,6 +1,8 @@
 # Sports Events Dashboard
 
-A demo web dashboard for sports events and results, built with Next.js v16, TypeScript v5, Tailwind CSS v4, and Zustand v5. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
+A demo web dashboard for sports events and results, built with Next.js v16, TypeScript v5 and Tailwind CSS v4. This project demonstrates modern React development practices and integrates with TheSportsDB API for real sports data.
+
+**Live Demo**: [https://sports-events-dashboard.vercel.app/](https://sports-events-dashboard.vercel.app/)
 
 ## Features
 
@@ -35,7 +37,7 @@ A demo web dashboard for sports events and results, built with Next.js v16, Type
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/akocemasov/sports-events-dashboard.git
    cd sports-events-dashboard
    ```
 
@@ -214,6 +216,10 @@ yarn typecheck # Type checking
 ## Deployment
 
 ### Vercel (Recommended)
+
+This project is deployed on Vercel: **[https://sports-events-dashboard.vercel.app/](https://sports-events-dashboard.vercel.app/)**
+
+To deploy your own fork:
 
 1. Push your code to GitHub.
 2. Import the repository in Vercel.
