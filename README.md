@@ -27,8 +27,8 @@ A demo web dashboard for sports events and results, built with Next.js v16, Type
 
 ### Prerequisites
 
-- Node.js v18+
-- npm, yarn, or pnpm
+- Node.js 20+
+- Yarn 1.x
 
 ### Installation
 
@@ -36,7 +36,7 @@ A demo web dashboard for sports events and results, built with Next.js v16, Type
 
    ```bash
    git clone <repository-url>
-   cd sports-event-dashboard
+   cd sports-events-dashboard
    ```
 
 2. Install dependencies:
@@ -215,9 +215,30 @@ yarn typecheck # Type checking
 
 ### Vercel (Recommended)
 
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Deploy automatically
+1. Push your code to GitHub.
+2. Import the repository in Vercel.
+3. Keep framework preset as **Next.js** and use defaults:
+   - Install command: `yarn install`
+   - Build command: `yarn build`
+4. (Optional) Add environment variables in Vercel project settings:
+   - `NEXT_PUBLIC_SPORTS_API_KEY`
+   - `NEXT_PUBLIC_SPORTS_API_BASE_URL`
+5. Deploy production from `main` and use generated `*.vercel.app` URL for demo sharing.
+
+### GitHub Publish Checklist
+
+1. Create a GitHub repository.
+2. Ensure `.env.local` is not committed.
+3. Run quality checks locally before pushing:
+
+   ```bash
+   yarn lint
+   yarn typecheck
+   yarn test
+   yarn build
+   ```
+
+4. Push the default branch (`main`) and verify GitHub Actions CI passes.
 
 ### Other Platforms
 
@@ -237,11 +258,17 @@ yarn start
 
 Create a `.env.local` file:
 
+```bash
+NEXT_PUBLIC_SPORTS_API_KEY=123
+NEXT_PUBLIC_SPORTS_API_BASE_URL=https://www.thesportsdb.com/api/v1/json
 ```
 
-No environment variables required for basic functionality
+These variables are optional for a demo build because the app includes the same public defaults in code.
 
-```
+## Demo Notes
+
+- Authentication is intentionally mock/demo-only and runs in `localStorage`.
+- Sports data is fetched from TheSportsDB free tier and may vary by API availability.
 
 ## Browser Support
 
