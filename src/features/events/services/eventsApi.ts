@@ -1,4 +1,4 @@
-import { API_KEY, BASE_URL } from '@/config/appConfig';
+import { API_PROXY_BASE_PATH } from '@/config/appConfig';
 import { parseEventsArray, parseEventSingle } from '@/features/events/utils/parse';
 import { SportEvent } from '@/types/events';
 import { fetchWithTimeout } from '@/utils/api';
@@ -14,7 +14,7 @@ export const eventsQueryKeys = {
  */
 export const fetchEventsPerDay = async (dateStr: string): Promise<SportEvent[]> => {
   try {
-    const url = `${BASE_URL}/${API_KEY}/eventsday.php?d=${encodeURIComponent(dateStr)}`;
+    const url = `${API_PROXY_BASE_PATH}/eventsday.php?d=${encodeURIComponent(dateStr)}`;
     const response = await fetchWithTimeout(url);
 
     if (!response.ok) {
@@ -43,7 +43,7 @@ export const fetchEventsPerDay = async (dateStr: string): Promise<SportEvent[]> 
  */
 export const fetchEventDetails = async (eventId: string): Promise<SportEvent | null> => {
   try {
-    const url = `${BASE_URL}/${API_KEY}/lookupevent.php?id=${encodeURIComponent(eventId)}`;
+    const url = `${API_PROXY_BASE_PATH}/lookupevent.php?id=${encodeURIComponent(eventId)}`;
     const response = await fetchWithTimeout(url);
 
     if (!response.ok) {

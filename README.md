@@ -114,6 +114,16 @@ Business logic is extracted into **client components** (`'use client'`) organize
 - **LoginForm** - Login form: validation and authentication
 - **RegisterForm** - Register form: multi-field validation
 
+### Configuration & API Boundaries
+
+- **Client-safe config** lives in `src/config/appConfig.ts` (timeouts, query timings, proxy base path).
+- **Server-only config** lives in `src/config/serverApiConfig.ts` and reads private env vars.
+- External SportsDB requests are centralized through a single proxy route:
+  - `GET /api/sportsdb/[...path]`
+  - Allowed upstream endpoints are validated server-side (`eventsday.php`, `lookupevent.php`).
+
+This keeps private keys out of browser bundles while preserving one reusable proxy entrypoint.
+
 ### Consistent Naming
 
 - **Components**: `[Feature]View.tsx` (containers with logic) or `[Feature]Form.tsx` (forms)
@@ -227,8 +237,8 @@ To deploy your own fork:
    - Install command: `yarn install`
    - Build command: `yarn build`
 4. (Optional) Add environment variables in Vercel project settings:
-   - `NEXT_PUBLIC_SPORTS_API_KEY`
-   - `NEXT_PUBLIC_SPORTS_API_BASE_URL`
+   - `API_KEY`
+   - `API_BASE_URL`
 5. Deploy production from `main` and use generated `*.vercel.app` URL for demo sharing.
 
 ### GitHub Publish Checklist
@@ -265,11 +275,11 @@ yarn start
 Create a `.env.local` file:
 
 ```bash
-NEXT_PUBLIC_SPORTS_API_KEY=123
-NEXT_PUBLIC_SPORTS_API_BASE_URL=https://www.thesportsdb.com/api/v1/json
+API_KEY=123
+API_BASE_URL=https://www.thesportsdb.com/api/v1/json
 ```
 
-These variables are optional for a demo build because the app includes the same public defaults in code.
+These variables are read server-side through internal API routes, so private keys are not exposed in browser bundles.
 
 ## Demo Notes
 
